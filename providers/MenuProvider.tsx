@@ -107,10 +107,17 @@ export const MenuProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+const noopSet = () => {};
+const defaultMenu: MenuContextType = {
+  activeMenu: { name: "Todo" },
+  setActiveMenu: noopSet,
+  showMenu: false,
+  setShowMenu: noopSet,
+  isResizing: false,
+  setIsResizing: noopSet,
+};
+
 export const useMenu = () => {
   const context = useContext(MenuContext);
-  if (!context) {
-    throw new Error("useMenu must be used within a MenuProvider");
-  }
-  return context;
+  return context ?? defaultMenu;
 };

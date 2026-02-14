@@ -1,0 +1,222 @@
+{
+  "login": {
+    "title": "Logga in",
+    "fields": {
+      "email": {
+        "placeholder": "E-post*",
+        "error": "Ange en giltig e-postadress"
+      },
+      "password": {
+        "placeholder": "Ange ditt lösenord*",
+        "error": "Ange ett giltigt lösenord"
+      }
+    },
+    "showPassword": "Visa lösenord",
+    "hidePassword": "Dölj lösenord",
+    "registerPrompt": "Har du inget konto?",
+    "registerLink": "Registrera",
+    "buttons": {
+      "login": "Logga in"
+    },
+    "toasts": {
+      "googleError": "Vi kunde inte logga in dig med Google just nu",
+      "discordError": "Vi kunde inte logga in dig med Discord just nu",
+      "invalidCredentials": "Ogiltig e-post eller lösenord",
+      "genericError": "Vi kan inte logga in dig just nu"
+    }
+  },
+
+  "register": {
+    "title": "Skapa ett konto",
+    "loginPrompt": "Har du redan ett konto?",
+    "loginLink": "Logga in",
+    "fields": {
+      "fname": {
+        "placeholder": "Förnamn*",
+        "error": "Ange ditt förnamn"
+      },
+      "lname": {
+        "placeholder": "Efternamn",
+        "error": "Ange ett giltigt efternamn"
+      },
+      "email": {
+        "placeholder": "E-post*",
+        "error": "Ange en giltig e-postadress"
+      },
+      "password": {
+        "placeholder": "Ange ditt lösenord*",
+        "error": "Ange ett giltigt lösenord"
+      }
+    },
+    "buttons": {
+      "register": "Skapa konto"
+    },
+    "toasts": {
+      "googleError": "Vi kunde inte logga in dig med Google just nu",
+      "discordError": "Vi kunde inte logga in dig med Discord just nu",
+      "genericError": "Vi kan inte registrera dig just nu"
+    }
+  },
+  "app": {
+    "agenda": "agenda",
+    "cancel": "Avbryt",
+    "save": "Spara",
+    "clear": "Rensa",
+    "today": "Idag",
+    "yesterday": "Igår",
+    "tomorrow": "Imorgon",
+    "nextWeek": "Nästa vecka",
+    "day": "Dag",
+    "week": "Vecka",
+    "month": "Månad",
+    "year": "År",
+    "duration": "Längd",
+    "date": "Datum",
+    "durationMenu": {
+      "title": "Ange längd",
+      "subTitle": "Gäller endast aktuellt datum",
+      "error": "Ogiltigt datumintervall: Sluttiden måste vara efter starttiden."
+    },
+    "priority": "Prioritet",
+    "project": "Projekt",
+    "overdue": "Försenad",
+    "normal": "Normal",
+    "important": "Viktig",
+    "urgent": "Brådskande",
+    "repeat": "Upprepa",
+    "everyDay": "Dagligen",
+    "everyWeek": "Veckovis",
+    "everyMonth": "Månadsvis",
+    "everyYear": "Årligen",
+    "weekdaysOnly": "Endast vardagar",
+    "custom": "Anpassad",
+    "customMenu": {
+      "title": "Anpassad upprepning",
+      "subTitle": "Ställ in ett anpassat upprepningsschema",
+      "every": "Varje",
+      "on": "på",
+      "ends": "Slutar",
+      "never": "Aldrig",
+      "onDate": "På datum (inklusive)"
+    },
+    "descPlaceholder": "beskrivning"
+  },
+
+  "today": {
+    "saveInstance": "Spara instans",
+    "nextRepeatText": "Denna uppgift är nästa gång schemalagd till",
+    "addATask": "Lägg till en uppgift",
+    "titlePlaceholder": "vattna blommorna kl 17",
+    "menu": {
+      "pinToTop": "Fäst överst",
+      "edit": "Redigera",
+      "editAsInstance": "Redigera som instans",
+      "delete": "Radera",
+      "Move to": "Flytta till..."
+    }
+  },
+  "sidebar": {
+    "completed": "Slutförda",
+    "calendar": "Kalender",
+    "note": "Anteckning",
+    "settings": "Inställningar",
+    "settingMenu": {
+      "logout": "Logga ut",
+      "theme": "Tema",
+      "shortcuts": "Genvägar"
+    },
+    "noteMenu": {
+      "rename": "byt namn",
+      "delete": "radera"
+    }
+  },
+  "completed": {
+    "title": "Slutförda uppgifter"
+  },
+
+  "modal": {
+    "confirm": "Bekräfta",
+    "cancel": "Avbryt",
+    "delete": {
+      "title": "Radera uppgift?",
+      "subtitle": "Denna åtgärd kan inte ångras. Detta raderar permanent",
+      "button": "Radera"
+    },
+    "deleteAll": {
+      "title": "Radera alla upprepningar?",
+      "subtitle": "Detta är en återkommande uppgift, radera alla andra upprepningar?",
+      "deleteInstance": "Radera bara denna förekomst",
+      "deleteAll": "Radera alla upprepningar"
+    },
+    "cancelEdit": {
+      "title": "Avbryt redigering?",
+      "subtitle": "Ändringar du har gjort kommer att förkastas"
+    },
+    "editAll": {
+      "title": "Redigera alla upprepningar?",
+      "subtitle": "Detta är en återkommande uppgift, gör samma ändring för alla andra upprepningar?",
+      "editInstance": "Redigera bara denna förekomst",
+      "editAll": "Redigera alla upprepningar"
+    }
+  },
+  "shortcuts": {
+    "title": "Genvägar",
+    "todo": {
+      "title": "Uppgiftsgenvägar",
+      "submitAndOpen": "Skicka formulär och öppna ett nytt",
+      "openForm": "Öppna formulär",
+      "exitForm": "Stäng formulär",
+      "editForm": "Redigera formulär"
+    },
+    "calendar": {
+      "markComplete": "Markera som slutförd",
+      "title": "Kalendergenvägar",
+      "previous": "Föregående månad/vecka/dag",
+      "next": "Nästa månad/vecka/dag",
+      "todayView": "Dagens vy",
+      "viewModes": "Månads-/Vecko-/Dagsvy"
+    },
+    "navigation": {
+      "title": "Navigering",
+      "then": "sedan",
+      "today": "Idag",
+      "calendar": "Kalender",
+      "completed": "Slutförda"
+    }
+  },
+  "filterMenu": {
+    "sorting": "Sortering",
+    "sort": "Sortera",
+    "direction": "Riktning",
+    "grouping": "Gruppering",
+    "group": "Gruppera",
+    "start Date": "Startdatum",
+    "deadline": "Deadline",
+    "duration": "Längd",
+    "ascending": "Stigande",
+    "descending": "Fallande",
+    "recurrence": "Upprepning",
+    "sortedBy": "Sorterat efter",
+    "groupedBy": "Grupperat efter",
+    "none": "Ingen"
+  },
+  "projectMenu": {
+    "typeToSearch": "Skriv för att söka",
+    "editColors": "Redigera färger",
+    "red": "Röd",
+    "orange": "Orange",
+    "yellow": "Gul",
+    "lime": "Lime",
+    "blue": "Blå",
+    "purple": "Lila",
+    "pink": "Rosa",
+    "teal": "Blågrön",
+    "coral": "Korall",
+    "gold": "Guld",
+    "deepBlue": "Mörkblå",
+    "rose": "Rosenröd",
+    "lightRed": "Ljusröd",
+    "brick": "Tegelröd",
+    "slate": "Skiffergrå"
+  }
+}
