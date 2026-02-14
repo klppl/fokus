@@ -1,0 +1,315 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  accounts      Account[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  Todos         Todo[]
+  CompletedTodo CompletedTodo[]
+  Note          Note[]
+  Project       Project[]
+  UserPreferences       UserPreferences[]
+  calDavAccounts CalDavAccount[]
+  timeZone  String?
+}
+
+enum SortBy{
+  dtstart
+  due
+  duration
+  priority
+}
+
+enum GroupBy{
+  dtstart
+  due
+  duration
+  priority
+  rrule
+  project
+}
+
+enum Direction{
+  Ascending
+  Descending
+}
+
+model UserPreferences {
+  id                String    @id @default(cuid())
+  user              User      @relation(fields: [userID], references: [id])
+  userID            String    @unique
+  sortBy            SortBy?
+  groupBy           GroupBy?
+  direction         Direction?
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+
+model VerificationToken {
+  identifier        String
+  token             String
+  expires           DateTime
+
+  @@id([identifier, token])
+}
+
+enum Priority{
+  Low
+  Medium
+  High
+}
+enum RepeatInterval{
+    daily
+    weekly
+    monthly
+    weekdays
+}
+
+model Todo {
+  id                String    @id @default(cuid())
+  title             String
+  description       String?
+  createdAt         DateTime  @default(now())
+  user              User      @relation(fields: [userID], references: [id])
+  userID            String
+  pinned            Boolean   @default(false)
+  order             Int       @default(0)
+  priority          Priority  @default(Low)
+
+  // RFC 5545 scheduling fields
+  dtstart           DateTime  @default(now())
+  due               DateTime
+  exdates           String    @default("[]")
+  durationMinutes   Int       @default(30)
+  rrule             String?
+  timeZone          String    @default("UTC")
+
+  completed         Boolean   @default(false)
+  instances         TodoInstance[]
+  project           Project?   @relation(fields: [projectID], references: [id], onDelete: SetNull)
+  projectID         String?
+  syncItems         CalDavSyncItem[]
+
+  @@index([userID])
+  @@index([projectID])
+  @@index([userID, projectID])
+  @@map("todos")
+}
+
+model TodoInstance {
+  id                       String    @id @default(cuid())
+  todoId                   String
+  todo                     Todo      @relation(fields: [todoId], references: [id], onDelete: Cascade)
+
+  recurId                  String
+  instanceDate             DateTime
+
+  overriddenTitle          String?
+  overriddenDescription    String?
+  overriddenPriority       Priority?
+  overriddenDtstart        DateTime?
+  overriddenDurationMinutes Int?
+  overriddenDue            DateTime?
+
+  completedAt              DateTime?
+  syncItems                CalDavSyncItem[]
+
+  @@unique([todoId, instanceDate])
+  @@map("todo_instances")
+}
+
+model CompletedTodo{
+  id            String          @id @default(cuid())
+  originalTodoID  String
+  title         String
+  description   String?
+  priority      Priority
+  completedAt   DateTime        @default(now())
+  dtstart     DateTime
+  due     DateTime
+  completedOnTime Boolean
+  daysToComplete  Decimal
+  rrule  String?
+  user          User            @relation(fields: [userID], references: [id])
+  userID        String
+  instanceDate  DateTime?
+  projectName   String?
+  projectColor  String?
+
+  @@index([userID])
+}
+
+model Note{
+  id            String          @id @default(cuid())
+  name          String
+  content       String?
+  createdAt     DateTime        @default(now())
+  user          User            @relation(fields: [userID], references: [id])
+  userID        String
+}
+
+enum ProjectColor {
+  RED
+  ORANGE
+  YELLOW
+  LIME
+  BLUE
+  PURPLE
+  PINK
+  TEAL
+  CORAL
+  GOLD
+  DEEP_BLUE
+  ROSE
+  LIGHT_RED
+  BRICK
+  SLATE
+}
+
+model Project {
+  id        String   @id @default(cuid())
+  name      String
+  color     ProjectColor?
+  user      User     @relation(fields: [userID], references: [id])
+  userID    String
+  todos     Todo[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  calDavCalendars CalDavCalendar[]
+  @@index([userID])
+}
+
+model CronLog{
+  id            String          @id @default(cuid())
+  runAt         DateTime
+  success       Boolean
+  log           String
+}
+
+model eventLog{
+    id          String          @id @default(cuid())
+    capturedTime DateTime @default(now())
+    eventName   String
+    log         String
+  }
+
+// ========================
+// CalDAV Sync Models
+// ========================
+
+enum SyncDirection {
+  BIDIRECTIONAL
+  PULL_ONLY
+  PUSH_ONLY
+}
+
+enum ComponentType {
+  VTODO
+  VEVENT
+}
+
+enum ConflictState {
+  NONE
+  PENDING_RESOLUTION
+  LOCAL_WINS
+  SERVER_WINS
+}
+
+model CalDavAccount {
+  id               String   @id @default(cuid())
+  user             User     @relation(fields: [userID], references: [id], onDelete: Cascade)
+  userID           String
+  displayName      String
+  serverUrl        String
+  username         String
+  encryptedPassword String
+  passwordIV       String
+  principalUrl     String?
+  calendarHomeUrl  String?
+  lastSyncAt       DateTime?
+  syncEnabled      Boolean  @default(true)
+  syncIntervalMin  Int      @default(15)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  calendars        CalDavCalendar[]
+
+  @@index([userID])
+}
+
+model CalDavCalendar {
+  id              String        @id @default(cuid())
+  account         CalDavAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId       String
+  calendarUrl     String
+  displayName     String?
+  color           String?
+  ctag            String?
+  syncToken       String?
+  syncDirection   SyncDirection @default(BIDIRECTIONAL)
+  componentType   ComponentType @default(VTODO)
+  project         Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  projectId       String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  items           CalDavSyncItem[]
+
+  @@index([accountId])
+}
+
+model CalDavSyncItem {
+  id                   String        @id @default(cuid())
+  calendar             CalDavCalendar @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  calendarId           String
+  caldavUid            String
+  caldavEtag           String?
+  caldavHref           String
+  todo                 Todo?         @relation(fields: [todoId], references: [id], onDelete: SetNull)
+  todoId               String?
+  todoInstance         TodoInstance? @relation(fields: [todoInstanceId], references: [id], onDelete: SetNull)
+  todoInstanceId       String?
+  lastSyncedIcal       String?
+  lastSyncedHash       String?
+  locallyModifiedAt    DateTime?
+  lastSyncedAt         DateTime?
+  conflictState        ConflictState @default(NONE)
+  serverIcalOnConflict String?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  @@unique([calendarId, caldavUid])
+  @@index([calendarId])
+  @@index([todoId])
+}

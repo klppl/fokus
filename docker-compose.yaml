@@ -1,0 +1,22 @@
+services:
+  tatsu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tatsu_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: file:./dev.db
+      NODE_ENV: production
+      NEXTAUTH_URL: http://localhost:3000
+      AUTH_TRUST_HOST: "true"
+      AUTH_SECRET: ${AUTH_SECRET}
+      CRONJOB_SECRET: ${CRONJOB_SECRET}
+    command: sh -c "npx prisma db push && npm run start"
+    volumes:
+      - tatsu_data:/app/prisma
+
+volumes:
+  tatsu_data:
