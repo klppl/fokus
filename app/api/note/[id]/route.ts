@@ -37,8 +37,6 @@ export async function DELETE(
 
     return NextResponse.json({ message: "note deleted" }, { status: 200 });
   } catch (error) {
-    console.log(error);
-
     // Handle custom error
     if (error instanceof BaseServerError) {
       return NextResponse.json(
@@ -102,8 +100,6 @@ export async function PATCH(
 
     return NextResponse.json({ message: "note updated" }, { status: 200 });
   } catch (error) {
-    console.log(error);
-
     if (error instanceof BaseServerError) {
       return NextResponse.json(
         { message: error.message },

@@ -35,7 +35,6 @@ export async function PATCH(
 
     if (!todo) throw new BadRequestError("bad request body recieved");
 
-    console.log(id, todo.instanceDate);
     //update the overriding instance with completedAt
     await prisma.todoInstance.update({
       where: {

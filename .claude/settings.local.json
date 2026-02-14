@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(openssl rand:*)",
+      "Bash(/home/alex/GitHub/fokus/.env:*)",
+      "Bash(npm run db:push:*)",
+      "Bash(npx prisma db push:*)",
+      "Bash(find:*)",
+      "Bash(xargs -I {} sh -c 'echo \"\"=== {} ===\"\" && head -40 {}')",
+      "Bash(xargs:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(npm test:*)"
+    ]
+  }
+}

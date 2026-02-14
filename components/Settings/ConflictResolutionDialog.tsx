@@ -31,7 +31,7 @@ export default function ConflictResolutionDialog({
           <ModalHeader>
             <ModalTitle>Sync Conflicts</ModalTitle>
             <ModalDescription>
-              These items were modified on both Tatsu and the CalDAV server.
+              These items were modified both locally and on the CalDAV server.
               Choose which version to keep.
             </ModalDescription>
           </ModalHeader>
@@ -76,7 +76,7 @@ function ConflictCard({ conflict }: { conflict: SyncConflict }) {
         {/* Local version */}
         <div className="border rounded p-3 bg-background">
           <p className="text-xs font-medium text-muted-foreground mb-2">
-            Local (Tatsu)
+            Local
           </p>
           {conflict.localTodo ? (
             <div className="text-sm space-y-1">

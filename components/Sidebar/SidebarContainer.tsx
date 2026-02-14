@@ -2,7 +2,6 @@
 import clsx from "clsx";
 import React, { useRef, useState } from "react";
 import { useMenu } from "@/providers/MenuProvider";
-import { Toaster } from "../ui/toaster";
 import CalendarItem from "./Calendar/CalendarItem";
 import CompletedItem from "./Completed/CompletedItem";
 import NoteCollapsible from "./Note/NoteCollapsible";
@@ -78,7 +77,6 @@ const SidebarContainer = () => {
             <LineSeparator className="m-0 mt-8 mb-4" />
             <ProjectSidebarItemContainer />
             <SyncStatusIndicator />
-            <Toaster />
           </div>
           <div className="px-4 pb-3">
             <Link

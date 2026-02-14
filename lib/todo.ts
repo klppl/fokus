@@ -11,7 +11,6 @@ export async function postTodo({
   const parsedObj = todoSchema.safeParse({ title, description: desc });
 
   if (!parsedObj.success) {
-    console.log(parsedObj.error.errors[0]);
     return;
   }
 
@@ -38,7 +37,6 @@ export async function patchTodo({
   const parsedObj = todoSchema.safeParse({ title, description });
 
   if (!parsedObj.success) {
-    console.log(parsedObj.error.errors[0]);
     return;
   }
 

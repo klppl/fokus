@@ -13,8 +13,8 @@ import {
 import {
   icalToTodo,
   todoToIcal,
-  TatsuTodo,
-  TatsuTodoInstance,
+  LocalTodo,
+  LocalTodoInstance,
 } from "./ical-converter";
 import {
   deserializeExdates,
@@ -306,7 +306,7 @@ async function syncCalendar(
             continue;
           }
 
-          const tatsuTodo: TatsuTodo = {
+          const tatsuTodo: LocalTodo = {
             id: item.todo.id,
             title: item.todo.title,
             description: item.todo.description,
@@ -323,7 +323,7 @@ async function syncCalendar(
             durationMinutes: item.todo.durationMinutes,
           };
 
-          const instances: TatsuTodoInstance[] = item.todo.instances.map(
+          const instances: LocalTodoInstance[] = item.todo.instances.map(
             (inst) => ({
               id: inst.id,
               todoId: inst.todoId,
@@ -406,7 +406,7 @@ async function syncCalendar(
 
         for (const todo of unsyncedTodos) {
           try {
-            const tatsuTodo: TatsuTodo = {
+            const tatsuTodo: LocalTodo = {
               id: todo.id,
               title: todo.title,
               description: todo.description,
@@ -423,7 +423,7 @@ async function syncCalendar(
               durationMinutes: todo.durationMinutes,
             };
 
-            const instances: TatsuTodoInstance[] = todo.instances.map(
+            const instances: LocalTodoInstance[] = todo.instances.map(
               (inst) => ({
                 id: inst.id,
                 todoId: inst.todoId,

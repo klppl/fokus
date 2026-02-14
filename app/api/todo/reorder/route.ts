@@ -30,8 +30,6 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json({ message: "Todo updated" }, { status: 200 });
   } catch (error) {
-    console.log(error);
-
     if (error instanceof BaseServerError) {
       return NextResponse.json(
         { message: error.message },

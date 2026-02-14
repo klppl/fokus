@@ -80,6 +80,36 @@ export async function POST(req: NextRequest) {
       counts.caldavAccounts = await purgeCalDav(user.id);
     }
 
+    // "all" = full factory reset: delete user account, preferences, logs, and everything
+    if (target === "all") {
+      await prisma.userPreferences.deleteMany({ where: { userID: user.id } });
+      await prisma.account.deleteMany({ where: { userId: user.id } });
+      await prisma.user.delete({ where: { id: user.id } });
+      await prisma.cronLog.deleteMany({});
+      await prisma.eventLog.deleteMany({});
+      await prisma.verificationToken.deleteMany({});
+
+      // Clear NextAuth JWT session cookies so the deleted user can't stay logged in
+      const response = NextResponse.json({
+        message: "Factory reset complete",
+        counts,
+      });
+      const cookieOptions = { path: "/", maxAge: 0 } as const;
+      response.cookies.set("next-auth.session-token", "", cookieOptions);
+      response.cookies.set("__Secure-next-auth.session-token", "", cookieOptions);
+      response.cookies.set("next-auth.csrf-token", "", cookieOptions);
+      response.cookies.set("__Secure-next-auth.csrf-token", "", cookieOptions);
+      response.cookies.set("next-auth.callback-url", "", cookieOptions);
+      response.cookies.set("__Secure-next-auth.callback-url", "", cookieOptions);
+      response.cookies.set("authjs.session-token", "", cookieOptions);
+      response.cookies.set("__Secure-authjs.session-token", "", cookieOptions);
+      response.cookies.set("authjs.csrf-token", "", cookieOptions);
+      response.cookies.set("__Secure-authjs.csrf-token", "", cookieOptions);
+      response.cookies.set("authjs.callback-url", "", cookieOptions);
+      response.cookies.set("__Secure-authjs.callback-url", "", cookieOptions);
+      return response;
+    }
+
     return NextResponse.json({
       message: `Purged ${target} successfully`,
       counts,

@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import { Toaster } from "@/components/ui/toaster";
 import "@/app/globals.css";
 
 
@@ -13,8 +14,8 @@ type Props = {
 };
 
 export const metadata: Metadata = {
-  title: "Sanity",
-  description: "Organize your tasks, schedule your day, and plan projects with Sanity, a secure and easy-to-use task planner."
+  title: "Fokus",
+  description: "Organize your tasks, schedule your day, and plan projects with Fokus."
 };
 
 const poppins = Poppins({
@@ -44,6 +45,7 @@ export default async function RootLayout({
               <main>
                 {children}
               </main>
+              <Toaster />
             </NextIntlClientProvider>
           </ThemeProvider>
         </body>

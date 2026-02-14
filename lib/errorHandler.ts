@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { BaseServerError } from "./customError";
 export function errorHandler(error: unknown) {
-  console.error("GET Todos Error:", error);
   if (error instanceof BaseServerError) {
     return NextResponse.json(
       { message: error.message },

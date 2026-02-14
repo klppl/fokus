@@ -79,7 +79,6 @@ const TodoFormProvider = ({ children, todoItem, overrideFields }: TodoFormProvid
     "UTC";
 
   const durationMinutes = useMemo(() => (dateRange.to.getTime() - dateRange.from.getTime()) / (60 * 1000), [dateRange])
-  console.log(durationMinutes)
 
   const derivedRepeatType = deriveRepeatType({ rruleOptions })
 

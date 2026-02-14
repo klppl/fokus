@@ -32,8 +32,6 @@ export async function GET() {
       },
     );
   } catch (error) {
-    console.log(error);
-
     //handle custom error
     if (error instanceof BaseServerError) {
       return NextResponse.json(

@@ -161,10 +161,18 @@ export default function AdminPanel() {
         parts.push(`${counts.caldavAccounts} CalDAV accounts`);
 
       toast({
-        title: "Purge complete",
+        title: target === "all" ? "Reset complete" : "Purge complete",
         description:
-          parts.length > 0 ? `Deleted: ${parts.join(", ")}` : "Nothing to delete",
+          target === "all"
+            ? "All data and user account deleted. You can register a new user."
+            : parts.length > 0 ? `Deleted: ${parts.join(", ")}` : "Nothing to delete",
       });
+
+      if (target === "all") {
+        // Full page reload to ensure session cookies are cleared
+        window.location.href = "/admin";
+        return;
+      }
     } catch (err) {
       toast({
         title: "Purge failed",
@@ -382,7 +390,7 @@ export default function AdminPanel() {
           <div className="space-y-1">
             <p className="font-medium">Reset Everything</p>
             <p className="text-sm text-muted-foreground">
-              Delete all todos, notes, projects, and CalDAV data.
+              Delete everything including your user account, preferences, and all data. Returns the app to initial setup.
             </p>
           </div>
           <Button

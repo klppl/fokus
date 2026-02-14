@@ -38,8 +38,6 @@ export async function DELETE(
     });
     return NextResponse.json({ message: "todo deleted" }, { status: 200 });
   } catch (error) {
-    console.log(error);
-
     // Handle custom error
     if (error instanceof BaseServerError) {
       return NextResponse.json(

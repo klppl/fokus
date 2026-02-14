@@ -1,20 +1,12 @@
 "use client"
-import React, { useEffect, useRef, useState } from 'react'
-import { useMenu } from "@/providers/MenuProvider";
+import React, { useEffect, useRef } from 'react'
 import SidebarToggle from "@/components/ui/SidebarToggle";
-import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from 'next/navigation';
 
 export default function SidebarToggleContainer() {
-  const { showMenu } = useMenu();
-  const [mounted, setMounted] = useState(false);
   const seqRef = useRef<string[]>([]);
   const router = useRouter();
   const timerRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -71,11 +63,7 @@ export default function SidebarToggleContainer() {
     return () => document.removeEventListener("keydown", handler, true);
   }, [router]);
 
-  return (<>
-    {mounted && !showMenu && <Toaster />}
-
+  return (
     <SidebarToggle className=" mb-4 sm:fixed left-0 p-0 sm:left-2 md:left-3 sm:top-8.75 text-muted-foreground hover:text-foreground" />
-
-  </>
   )
 }

@@ -56,15 +56,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
 
           return user;
-        } catch (error) {
-          console.log(error);
+        } catch {
           throw new Error("Authentication failed.");
         }
       },
     }),
   ],
   callbacks: {
-    jwt({ token, user, account }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
         token.timeZone = user.timeZone;
@@ -72,9 +71,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.name = user.name;
         }
       }
+
+      // Verify the user still exists in the database
+      if (token.id) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { id: true },
+        });
+        if (!dbUser) {
+          return { ...token, id: null };
+        }
+      }
+
       return token;
     },
     session({ session, token }) {
+      if (!token.id) {
+        // User was deleted — invalidate the session
+        session.user = undefined as unknown as typeof session.user;
+        return session;
+      }
       session.user.id = token.id as string;
       session.user.timeZone = token.timeZone
       return session;

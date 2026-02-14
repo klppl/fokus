@@ -67,8 +67,6 @@ export async function POST(req: NextRequest) {
       { status: 200 },
     );
   } catch (error) {
-    console.log(error);
-
     //handle custom error
     if (error instanceof BaseServerError) {
       return NextResponse.json(

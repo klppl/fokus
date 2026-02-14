@@ -28,14 +28,14 @@ export default function LoginPage() {
   async function onSubmit(data: LoginFormProp) {
     try {
       const result = await signIn("credentials", { ...data, redirect: false, callbackUrl: "/app/todo" });
-      if (result?.error) {
+      if (result?.error || result?.ok === false) {
         toast({ title: t("toasts.invalidCredentials") });
       } else {
         router.push("/app/todo");
       }
-    } catch (error) {
-      console.error(error);
-      toast({ title: t("toasts.genericError") });
+    } catch {
+      // NextAuth v5 throws on credentials failure
+      toast({ title: t("toasts.invalidCredentials") });
     }
   }
 

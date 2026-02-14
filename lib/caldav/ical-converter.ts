@@ -2,7 +2,7 @@ import ICAL from "ical.js";
 import { ComponentType, Priority } from "@prisma/client";
 
 // Types for converter input/output
-export interface TatsuTodo {
+export interface LocalTodo {
   id: string;
   title: string;
   description: string | null;
@@ -19,7 +19,7 @@ export interface TatsuTodo {
   durationMinutes: number;
 }
 
-export interface TatsuTodoInstance {
+export interface LocalTodoInstance {
   id: string;
   todoId: string;
   instanceDate: Date;
@@ -61,8 +61,8 @@ export interface ParsedIcalInstance {
   completedAt: Date | null;
 }
 
-// Priority mapping: Tatsu -> iCal (RFC 5545)
-export function tatsuPriorityToIcal(priority: Priority): number {
+// Priority mapping: Local -> iCal (RFC 5545)
+export function localPriorityToIcal(priority: Priority): number {
   switch (priority) {
     case "High":
       return 1;
@@ -75,8 +75,8 @@ export function tatsuPriorityToIcal(priority: Priority): number {
   }
 }
 
-// Priority mapping: iCal -> Tatsu
-export function icalPriorityToTatsu(icalPriority: number): Priority {
+// Priority mapping: iCal -> Local
+export function icalPriorityToLocal(icalPriority: number): Priority {
   if (icalPriority >= 1 && icalPriority <= 3) return "High";
   if (icalPriority >= 4 && icalPriority <= 6) return "Medium";
   if (icalPriority >= 7 && icalPriority <= 9) return "Low";
@@ -84,16 +84,16 @@ export function icalPriorityToTatsu(icalPriority: number): Priority {
 }
 
 /**
- * Convert a Tatsu Todo (+ instances) to an iCalendar string.
+ * Convert a local Todo (+ instances) to an iCalendar string.
  */
 export function todoToIcal(
-  todo: TatsuTodo,
-  instances: TatsuTodoInstance[],
+  todo: LocalTodo,
+  instances: LocalTodoInstance[],
   componentType: ComponentType,
   uid?: string,
 ): string {
   const cal = new ICAL.Component(["vcalendar", [], []]);
-  cal.updatePropertyWithValue("prodid", "-//Tatsu//CalDAV Sync//EN");
+  cal.updatePropertyWithValue("prodid", "-//Fokus//CalDAV Sync//EN");
   cal.updatePropertyWithValue("version", "2.0");
 
   const compName = componentType === "VTODO" ? "vtodo" : "vevent";
@@ -138,7 +138,7 @@ export function todoToIcal(
   // PRIORITY
   comp.updatePropertyWithValue(
     "priority",
-    tatsuPriorityToIcal(todo.priority),
+    localPriorityToIcal(todo.priority),
   );
 
   // Completion status
@@ -220,7 +220,7 @@ export function todoToIcal(
 
     instComp.updatePropertyWithValue(
       "priority",
-      tatsuPriorityToIcal(inst.overriddenPriority || todo.priority),
+      localPriorityToIcal(inst.overriddenPriority || todo.priority),
     );
 
     // Completion for instance
@@ -248,7 +248,7 @@ export function todoToIcal(
 }
 
 /**
- * Parse an iCalendar string into Tatsu-compatible data.
+ * Parse an iCalendar string into local todo data.
  */
 export function icalToTodo(
   icalData: string,
@@ -315,7 +315,7 @@ export function icalToTodo(
   // Priority
   const icalPriority =
     Number(mainComp.getFirstPropertyValue("priority")) || 0;
-  const priority = icalPriorityToTatsu(icalPriority);
+  const priority = icalPriorityToLocal(icalPriority);
 
   // Completion
   let completed = false;
@@ -330,10 +330,10 @@ export function icalToTodo(
     if (completedVal) completedAt = completedVal.toJSDate();
   } else {
     // VEVENT: check custom property
-    const tatsuCompleted = mainComp.getFirstPropertyValue(
+    const xCompleted = mainComp.getFirstPropertyValue(
       "x-tatsu-completed",
     ) as string;
-    completed = tatsuCompleted === "TRUE" || status === "CANCELLED";
+    completed = xCompleted === "TRUE" || status === "CANCELLED";
   }
 
   // Custom properties
@@ -393,7 +393,7 @@ export function icalToTodo(
     const instPriorityVal =
       Number(comp.getFirstPropertyValue("priority")) || 0;
     const instPriority = instPriorityVal
-      ? icalPriorityToTatsu(instPriorityVal)
+      ? icalPriorityToLocal(instPriorityVal)
       : null;
 
     let instCompleted = false;

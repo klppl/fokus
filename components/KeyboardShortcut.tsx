@@ -195,22 +195,6 @@ export default function KeyboardShortcuts({
                         {shortcutsDict("navigation.completed")}
                       </td>
                     </tr>
-                    <tr className="hover:bg-accent transition-colors">
-                      <td className="px-6 py-3 whitespace-nowrap">
-                        <kbd className="px-3 py-1.5 text-sm font-mono bg-muted border border-border rounded shadow-xs">
-                          G
-                        </kbd>
-                        <span className="mx-2 text-muted-foreground">
-                          {shortcutsDict("navigation.then")}
-                        </span>
-                        <kbd className="px-3 py-1.5 text-sm font-mono bg-muted border border-border rounded shadow-xs">
-                          V
-                        </kbd>
-                      </td>
-                      <td className="px-6 py-3 text-card-foreground">
-                        {shortcutsDict("navigation.vault")}
-                      </td>
-                    </tr>
                   </tbody>
                 </table>
               </div>

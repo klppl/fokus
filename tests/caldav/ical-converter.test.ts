@@ -1,13 +1,13 @@
 import {
   todoToIcal,
   icalToTodo,
-  tatsuPriorityToIcal,
-  icalPriorityToTatsu,
-  TatsuTodo,
-  TatsuTodoInstance,
+  localPriorityToIcal,
+  icalPriorityToLocal,
+  LocalTodo,
+  LocalTodoInstance,
 } from "@/lib/caldav/ical-converter";
 
-function makeTodo(overrides: Partial<TatsuTodo> = {}): TatsuTodo {
+function makeTodo(overrides: Partial<LocalTodo> = {}): LocalTodo {
   return {
     id: "test-todo-1",
     title: "Test Todo",
@@ -28,8 +28,8 @@ function makeTodo(overrides: Partial<TatsuTodo> = {}): TatsuTodo {
 }
 
 function makeInstance(
-  overrides: Partial<TatsuTodoInstance> = {},
-): TatsuTodoInstance {
+  overrides: Partial<LocalTodoInstance> = {},
+): LocalTodoInstance {
   return {
     id: "inst-1",
     todoId: "test-todo-1",
@@ -46,29 +46,29 @@ function makeInstance(
 }
 
 describe("Priority mapping", () => {
-  test("tatsuPriorityToIcal maps correctly", () => {
-    expect(tatsuPriorityToIcal("High")).toBe(1);
-    expect(tatsuPriorityToIcal("Medium")).toBe(5);
-    expect(tatsuPriorityToIcal("Low")).toBe(9);
+  test("localPriorityToIcal maps correctly", () => {
+    expect(localPriorityToIcal("High")).toBe(1);
+    expect(localPriorityToIcal("Medium")).toBe(5);
+    expect(localPriorityToIcal("Low")).toBe(9);
   });
 
-  test("icalPriorityToTatsu maps correctly", () => {
-    expect(icalPriorityToTatsu(1)).toBe("High");
-    expect(icalPriorityToTatsu(2)).toBe("High");
-    expect(icalPriorityToTatsu(3)).toBe("High");
-    expect(icalPriorityToTatsu(4)).toBe("Medium");
-    expect(icalPriorityToTatsu(5)).toBe("Medium");
-    expect(icalPriorityToTatsu(6)).toBe("Medium");
-    expect(icalPriorityToTatsu(7)).toBe("Low");
-    expect(icalPriorityToTatsu(8)).toBe("Low");
-    expect(icalPriorityToTatsu(9)).toBe("Low");
-    expect(icalPriorityToTatsu(0)).toBe("Low");
+  test("icalPriorityToLocal maps correctly", () => {
+    expect(icalPriorityToLocal(1)).toBe("High");
+    expect(icalPriorityToLocal(2)).toBe("High");
+    expect(icalPriorityToLocal(3)).toBe("High");
+    expect(icalPriorityToLocal(4)).toBe("Medium");
+    expect(icalPriorityToLocal(5)).toBe("Medium");
+    expect(icalPriorityToLocal(6)).toBe("Medium");
+    expect(icalPriorityToLocal(7)).toBe("Low");
+    expect(icalPriorityToLocal(8)).toBe("Low");
+    expect(icalPriorityToLocal(9)).toBe("Low");
+    expect(icalPriorityToLocal(0)).toBe("Low");
   });
 
   test("priority round-trip", () => {
     for (const p of ["High", "Medium", "Low"] as const) {
-      const ical = tatsuPriorityToIcal(p);
-      const back = icalPriorityToTatsu(ical);
+      const ical = localPriorityToIcal(p);
+      const back = icalPriorityToLocal(ical);
       expect(back).toBe(p);
     }
   });
