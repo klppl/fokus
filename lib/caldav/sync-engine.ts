@@ -144,7 +144,17 @@ async function syncCalendar(
             existingItem.lastSyncedAt &&
             existingItem.locallyModifiedAt > existingItem.lastSyncedAt
           ) {
-            // Both sides changed — conflict
+            // Check if server actually changed since last sync
+            const serverUnchanged =
+              (existingItem.caldavEtag && existingItem.caldavEtag === resource.etag) ||
+              (existingItem.lastSyncedIcal && existingItem.lastSyncedIcal === resource.icalData);
+
+            if (serverUnchanged) {
+              // Only local side changed — skip, let push phase handle it
+              continue;
+            }
+
+            // Both sides truly changed — conflict
             await prisma.calDavSyncItem.update({
               where: { id: existingItem.id },
               data: {

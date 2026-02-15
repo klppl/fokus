@@ -114,6 +114,27 @@ CalDAV integration lives in `lib/caldav/`. Supports both **Basic** and **Digest*
 - `sync-engine.ts` — Pull/push sync with conflict detection
 - `change-tracker.ts` — Marks todos as locally modified for next sync push
 
+### Calendar management
+
+Each `CalDavCalendar` has per-calendar settings configurable from the CalDAV settings UI (`components/Settings/CalDavSettings.tsx`):
+
+- **`syncEnabled`** (Boolean, default true) — toggle to include/exclude a calendar from sync. The sync engine filters by `syncEnabled: true`.
+- **`componentType`** (VTODO | VEVENT) — auto-detected during discovery but can be changed in the UI. Controls which iCal component filter is sent to the server during fetch.
+- **`syncDirection`** (BIDIRECTIONAL | PULL_ONLY | PUSH_ONLY) — controls sync direction per calendar.
+
+Mutation hook: `features/caldav/query/update-caldav-calendar.ts` calls `PATCH /api/caldav/calendar/[id]`.
+
+### tsdav component filter (critical)
+
+`fetchCalendarObjects` from tsdav defaults to a **VEVENT-only** filter. `client.ts` explicitly passes a `comp-filter` matching the calendar's `componentType` so that VTODO calendars actually return results. Without this, pull always returns 0 resources for VTODO calendars.
+
+### Logging
+
+CalDAV operations log to the terminal with prefixes:
+- `[caldav-discovery]` — calendar discovery (names, URLs, component types)
+- `[caldav-account]` — account creation and calendar record creation
+- `[caldav-sync]` — sync operations (calendar count, fetch results, resource parsing)
+
 ## Removed Features (vs upstream)
 
 These features from the original upstream repo have been removed:

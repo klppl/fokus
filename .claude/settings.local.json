@@ -12,7 +12,8 @@
       "Bash(grep:*)",
       "Bash(npm test:*)",
       "Bash(npm uninstall:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npx prisma db execute:*)"
     ]
   }
 }

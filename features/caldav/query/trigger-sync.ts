@@ -21,6 +21,7 @@ export const useTriggerSync = () => {
       queryClient.invalidateQueries({ queryKey: ["calendarTodo"] });
       queryClient.invalidateQueries({ queryKey: ["caldavAccounts"] });
       queryClient.invalidateQueries({ queryKey: ["syncStatus"] });
+      queryClient.invalidateQueries({ queryKey: ["syncConflicts"] });
       toast({ description: data.message || "Sync completed" });
     },
     onError: (error) => {
