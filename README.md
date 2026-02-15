@@ -4,6 +4,8 @@ A single-user, self-hosted todo and productivity app built with Next.js.
 
 This project is **heavily based on [Tatsu](https://github.com/ZhengJiawen44/tatsu)** by [@ZhengJiawen44](https://github.com/ZhengJiawen44). Along the way I decided I wasn't interested in hosting this for other people, so I forked it and started reshaping it for my own personal use — adding CalDAV sync, removing features I didn't need, and tailoring the whole thing to a single-user setup. I'll probably steer it even further from the original over time. All credit for making this possible goes to ZhengJiawen44.
 
+![Screenshot](images/screenshot.png)
+
 ## Features
 
 - **Tasks** with drag-and-drop reordering, priorities, projects, and natural language date input ("tomorrow at 5pm")
