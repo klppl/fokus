@@ -1,9 +1,14 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import dynamic from "next/dynamic";
 import { useNote } from "@/features/notes/query/get-notes";
-import Editor from "@/features/notes/component/Editor";
 import NoteLoading from "@/components/Sidebar/Note/NoteLoading";
+
+const Editor = dynamic(
+  () => import("@/features/notes/component/Editor"),
+  { loading: () => <NoteLoading /> },
+);
 const Page = () => {
   const router = useRouter();
   const params = useParams();

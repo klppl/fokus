@@ -20,7 +20,7 @@ export default function SyncStatusIndicator() {
         open={showConflicts}
         onOpenChange={setShowConflicts}
       />
-      <div className="flex items-center gap-2 px-2 py-1">
+      <div className="flex items-center gap-2">
         <button
           onClick={() => triggerSync(undefined)}
           disabled={isSyncing}

@@ -81,11 +81,11 @@ const SidebarContainer = () => {
             <LineSeparator className="m-0 mt-8 mb-4" />
             <ProjectSidebarItemContainer />
           </div>
-          <div className="flex flex-col gap-1 px-4 pb-3">
+          <div className="flex items-center gap-3 px-4 pb-3">
             <SyncStatusIndicator />
             <Link
               href="/admin"
-              className="flex items-center gap-2 text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+              className="flex items-center gap-1.5 text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
             >
               <Settings2Icon className="w-3.5 h-3.5" />
               <span>Admin</span>
