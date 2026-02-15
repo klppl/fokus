@@ -16,7 +16,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { ArrowUpLeft, LogOut, Moon, Sun, Globe, RefreshCw } from "lucide-react";
+import { ArrowUpLeft, LogOut, Palette, Globe, RefreshCw, Check } from "lucide-react";
+import { themeGroups } from "@/lib/themes";
+import { DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import ConfirmLogoutModal from "../Settings/ConfirmLogoutModal";
 import KeyboardShortcuts from "@/components/KeyboardShortcut";
 import CalDavSettings from "@/components/Settings/CalDavSettings";
@@ -100,19 +102,34 @@ const UserCard = ({ className }: { className?: string }) => {
             <LogOut className="w-4! h-4!" />
             {sidebarDict("settingMenu.logout")}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={(e) => {
-              e.preventDefault();
-              if (theme == "dark") {
-                setTheme("light");
-              } else {
-                setTheme("dark");
-              }
-            }}
-          >
-            {theme == "light" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            {sidebarDict("settingMenu.theme")}
-          </DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <Palette className="w-4! h-4!" strokeWidth={1.7} />
+              {sidebarDict("settingMenu.theme")}
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent sideOffset={4}>
+              {themeGroups.map((group, gi) => (
+                <div key={group.group}>
+                  {gi > 0 && <DropdownMenuSeparator />}
+                  <DropdownMenuLabel className="text-xs text-muted-foreground">
+                    {group.group}
+                  </DropdownMenuLabel>
+                  {group.items.map((t) => (
+                    <DropdownMenuItem
+                      key={t.id}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setTheme(t.id);
+                      }}
+                    >
+                      {theme === t.id && <Check className="w-3.5 h-3.5 mr-1" />}
+                      <span className={theme !== t.id ? "ml-[1.125rem]" : ""}>{t.name}</span>
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              ))}
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
           <DropdownMenuItem
             onClick={(e) => {
               e.preventDefault();

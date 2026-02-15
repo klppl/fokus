@@ -10,23 +10,15 @@ This project is **heavily based on [Tatsu](https://github.com/ZhengJiawen44/tats
 
 - **Tasks** with drag-and-drop reordering, priorities, projects, and natural language date input ("tomorrow at 5pm")
 - **Recurring tasks** (RFC 5545 RRULE) with per-instance editing
+- **Overdue task tracking** with dedicated overdue section
 - **Calendar view** (month/week/day)
 - **Notes** with a Tiptap rich-text editor
 - **Projects** with color coding
 - **CalDAV sync** — bidirectional sync with CalDAV servers (tested with Baikal), supports both VTODO and VEVENT, Basic and Digest auth
 - **Admin panel** at `/admin` for user setup, password reset, and data management
+- **Keyboard shortcuts**
 - **Internationalization** — ar, de, en, es, fr, it, ja, ms, pt, ru, sv, zh
-- **Dark mode**
-
-## Differences from Tatsu
-
-- Removed public registration — user is created via the admin panel
-- Removed Vault / S3 / file encryption
-- Removed feedback system and popups
-- Switched from PostgreSQL to SQLite
-- Added CalDAV sync engine
-- Added admin panel (password-protected, separate from user auth)
-- Single-user model throughout
+- **Themes** — Default light/dark, Gruvbox, Nord, and Rosé Pine (each with light and dark variants)
 
 ## Requirements
 
@@ -124,6 +116,33 @@ messages/                i18n translation files
 prisma/
   schema.sqlite.prisma   Database schema (source of truth)
 ```
+
+## Adding a custom theme
+
+1. Create a CSS file in `styles/themes/` with a class selector matching your theme id and all the color variable overrides (copy an existing theme file as a starting point):
+
+   ```css
+   /* styles/themes/my-theme.css */
+   .my-theme {
+     --background: 0 0% 100%;
+     --foreground: 0 0% 0%;
+     /* ... all other variables ... */
+   }
+   ```
+
+2. Add one entry to the `themes` array in `lib/themes.ts`:
+
+   ```ts
+   { id: "my-theme", name: "My Theme", group: "Custom", isDark: false },
+   ```
+
+3. Import the CSS file in `app/globals.css`:
+
+   ```css
+   @import "../styles/themes/my-theme.css";
+   ```
+
+The theme will automatically appear in the sidebar theme picker. If `isDark` is `true`, the `.dark` class is applied so Tailwind `dark:` variants work.
 
 ## Tech stack
 

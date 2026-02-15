@@ -10,7 +10,7 @@ import TodoFormLoading from "./TodoForm/TodoFormLoading";
 import { Check } from "lucide-react";
 import LineSeparator from "@/components/ui/lineSeparator";
 import { getDisplayDate } from "@/lib/date/displayDate";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useTodoMutation } from "@/providers/TodoMutationProvider";
 import { useProjectMetaData } from "@/components/Sidebar/Project/query/get-project-meta";
 import ProjectTag from "@/components/ProjectTag";
@@ -29,6 +29,7 @@ type TodoItemContainerProps = {
 }
 
 export const TodoItemContainer = ({ todoItem, overdue }: TodoItemContainerProps) => {
+  const t = useTranslations("app");
   const { projectMetaData } = useProjectMetaData();
   const { useCompleteTodo } = useTodoMutation();
   const { completeMutateFn } = useCompleteTodo();
@@ -110,7 +111,7 @@ export const TodoItemContainer = ({ todoItem, overdue }: TodoItemContainerProps)
               {description}
             </pre>
             <div className="flex flex-wrap items-center justify-start gap-2">
-              <p className={clsx(overdue ? "text-orange" : "text-lime")}>
+              <p className={clsx(overdue ? "text-red-500" : "text-lime")}>
                 {getDisplayDate(dtstart, true, locale, userTimeZone?.timeZone)}
               </p>
               {todoItem.projectID &&
@@ -121,7 +122,7 @@ export const TodoItemContainer = ({ todoItem, overdue }: TodoItemContainerProps)
                   </span>
                 </p>
               }
-              {overdue && <p className='py-[0.2rem] px-2 rounded-full bg-sidebar border'>overdue</p>}
+              {overdue && <p className='py-[0.2rem] px-2 rounded-full bg-red-500/10 text-red-500 border border-red-500/20'>{t("overdue")}</p>}
             </div>
           </div>
         </div>

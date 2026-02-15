@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import { themeIds } from "@/lib/themes";
 import { Toaster } from "@/components/ui/toaster";
 import "@/app/globals.css";
 
@@ -38,7 +39,7 @@ export default async function RootLayout({
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
-            enableSystem
+            themes={[...themeIds]}
             disableTransitionOnChange
           >
             <NextIntlClientProvider messages={messages}>

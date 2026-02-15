@@ -1,0 +1,76 @@
+.nord-light {
+  --background: 218 27% 94%; /* #eceff4 */
+  --foreground: 220 16% 22%; /* #2e3440 */
+
+  --shadow: 218 15% 75%;
+  --card: 219 28% 88%; /* #e5e9f0 */
+  --card-foreground: 220 16% 22%;
+
+  --popover: 218 27% 95%;
+  --popover-foreground: 220 16% 22%;
+  --popover-accent: 219 22% 85%;
+  --popover-border: 213 27% 84%; /* #d8dee9 */
+
+  --primary: 213 32% 52%; /* #5e81ac */
+  --primary-foreground: 218 27% 96%;
+
+  --muted: 218 27% 96%;
+  --muted-foreground: 220 10% 42%;
+
+  --accent: 219 22% 85%;
+  --accent-foreground: 220 16% 22%;
+
+  --destructive: 354 42% 56%; /* #bf616a */
+
+  --border: 213 27% 84%; /* #d8dee9 */
+  --border-muted: 213 27% 88%;
+  --input: 219 22% 85%;
+  --ring: 213 32% 52%;
+
+  --lime: 92 28% 40%;
+  --orange: 14 51% 63%;
+  --red: 354 42% 56%;
+  --nlp: 218 25% 85%;
+
+  --calendar-lime: 92 28% 35%;
+  --calendar-orange: 14 50% 50%;
+  --calendar-red: 354 42% 50%;
+
+  --sidebar: 219 28% 88%; /* #e5e9f0 */
+  --sidebar-primary: 219 22% 83%;
+  --sidebar-primary-foreground: 220 16% 22%;
+  --sidebar-border: 213 27% 84%;
+
+  --calendar-border: 213 27% 84%;
+
+  --tooltip: 219 22% 85%;
+
+  --accent-red: 354 42% 56%;
+  --accent-orange: 14 51% 63%;
+  --accent-yellow: 40 65% 55%;
+  --accent-lime: 92 28% 40%;
+  --accent-blue: 213 32% 52%;
+  --accent-purple: 311 20% 55%;
+  --accent-pink: 311 20% 55%;
+  --accent-teal: 179 25% 50%;
+  --accent-coral: 14 45% 55%;
+  --accent-gold: 40 60% 50%;
+  --accent-deep-blue: 213 32% 45%;
+  --accent-rose: 354 42% 55%;
+  --accent-light-red: 354 35% 60%;
+  --accent-brick: 14 40% 45%;
+  --accent-slate: 220 16% 40%;
+
+  --form-background: 219 22% 82%;
+  --form-foreground: 220 16% 22%;
+  --form-border: 213 20% 70%;
+  --form-border-accent: 213 20% 60%;
+  --input-background: 219 22% 85%;
+  --form-label: 220 10% 45%;
+  --form-label-accent: 220 10% 30%;
+  --form-link: 213 32% 48%;
+  --form-link-accent: 213 32% 40%;
+  --form-button: 213 32% 52%;
+  --form-button-accent: 213 32% 58%;
+  --form-muted: 220 10% 55%;
+}

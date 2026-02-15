@@ -13,8 +13,8 @@ const Page = async () => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="select-none bg-inherit mt-4">
-        <TodayTodoContainer />
         <OverDueTodoContainer />
+        <TodayTodoContainer />
       </div>
     </HydrationBoundary>
   );

@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useTranslations } from "next-intl";
 import { useOverdueTodo } from "../query/get-overdue-todo";
 import TodoListLoading from "@/components/ui/TodoListLoading";
 import TodoGroup from "@/components/todo/component/TodoGroup";
@@ -14,6 +15,7 @@ import { useCompleteOverdueTodo } from "../query/complete-overdue-todo";
 import TodoMutationProvider from "@/providers/TodoMutationProvider";
 
 export default function OverDueTodoContainer() {
+    const t = useTranslations("app");
     const { todos: overdueTodos, isLoading } =
         useOverdueTodo();
 
@@ -21,7 +23,7 @@ export default function OverDueTodoContainer() {
     return (
         <div className="mb-20">
             <div className="flex items-center gap-2 mt-10 mb-4">
-                <h3 className="text-lg font-semibold select-none">Overdue</h3>
+                <h3 className="text-lg font-semibold select-none text-red-500">{t("overdue")}</h3>
                 <LineSeparator className="flex-1" />
             </div>
             <div>

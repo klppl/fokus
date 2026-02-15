@@ -1,0 +1,76 @@
+.gruvbox-dark {
+  --background: 0 0% 16%; /* #282828 */
+  --foreground: 43 46% 88%; /* #ebdbb2 */
+
+  --shadow: 0 0% 5%;
+  --card: 20 6% 22%; /* #3c3836 */
+  --card-foreground: 43 46% 88%;
+
+  --popover: 20 6% 22%;
+  --popover-foreground: 43 46% 88%;
+  --popover-accent: 24 8% 30%;
+  --popover-border: 24 8% 30%;
+
+  --primary: 70 66% 44%; /* #b8bb26 */
+  --primary-foreground: 0 0% 10%;
+
+  --muted: 0 0% 12%;
+  --muted-foreground: 43 20% 60%;
+
+  --accent: 24 8% 30%;
+  --accent-foreground: 43 46% 88%;
+
+  --destructive: 6 73% 60%; /* #fb4934 */
+
+  --border: 24 8% 30%; /* ~#504945 */
+  --border-muted: 20 6% 22%;
+  --input: 24 8% 30%;
+  --ring: 70 66% 44%;
+
+  --lime: 70 66% 44%;
+  --orange: 27 96% 55%; /* #fe8019 */
+  --red: 6 73% 60%;
+  --nlp: 27 60% 30%;
+
+  --calendar-lime: 70 50% 30%;
+  --calendar-orange: 27 70% 44%;
+  --calendar-red: 6 55% 48%;
+
+  --sidebar: 24 8% 30%; /* #504945 */
+  --sidebar-primary: 20 6% 26%;
+  --sidebar-primary-foreground: 43 46% 88%;
+  --sidebar-border: 24 8% 30%;
+
+  --calendar-border: 24 8% 25%;
+
+  --tooltip: 20 6% 22%;
+
+  --accent-red: 6 73% 60%;
+  --accent-orange: 27 96% 55%;
+  --accent-yellow: 42 94% 58%; /* #fabd2f */
+  --accent-lime: 70 66% 44%;
+  --accent-blue: 175 24% 57%; /* #83a598 */
+  --accent-purple: 334 38% 65%; /* #d3869b */
+  --accent-pink: 334 38% 65%;
+  --accent-teal: 142 30% 53%; /* #8ec07c */
+  --accent-coral: 6 60% 55%;
+  --accent-gold: 42 80% 55%;
+  --accent-deep-blue: 175 24% 50%;
+  --accent-rose: 334 38% 58%;
+  --accent-light-red: 6 55% 65%;
+  --accent-brick: 15 45% 45%;
+  --accent-slate: 24 8% 35%;
+
+  --form-background: 0 0% 14%;
+  --form-foreground: 43 46% 88%;
+  --form-border: 24 8% 28%;
+  --form-border-accent: 24 8% 40%;
+  --input-background: 20 6% 22%;
+  --form-label: 43 15% 50%;
+  --form-label-accent: 43 30% 75%;
+  --form-link: 70 50% 55%;
+  --form-link-accent: 70 60% 65%;
+  --form-button: 70 66% 44%;
+  --form-button-accent: 70 66% 50%;
+  --form-muted: 43 10% 50%;
+}

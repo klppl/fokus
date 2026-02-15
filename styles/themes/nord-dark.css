@@ -1,0 +1,76 @@
+.nord-dark {
+  --background: 220 16% 22%; /* #2e3440 */
+  --foreground: 218 27% 94%; /* #eceff4 */
+
+  --shadow: 220 16% 10%;
+  --card: 222 16% 28%; /* #3b4252 */
+  --card-foreground: 218 27% 94%;
+
+  --popover: 222 16% 28%;
+  --popover-foreground: 218 27% 94%;
+  --popover-accent: 220 16% 36%;
+  --popover-border: 220 16% 36%; /* #4c566a */
+
+  --primary: 193 43% 67%; /* #88c0d0 */
+  --primary-foreground: 220 16% 15%;
+
+  --muted: 220 16% 18%;
+  --muted-foreground: 218 15% 65%;
+
+  --accent: 220 16% 36%;
+  --accent-foreground: 218 27% 94%;
+
+  --destructive: 354 42% 56%; /* #bf616a */
+
+  --border: 220 16% 36%; /* #4c566a */
+  --border-muted: 222 16% 28%;
+  --input: 220 16% 36%;
+  --ring: 193 43% 67%;
+
+  --lime: 92 28% 45%;
+  --orange: 14 51% 63%; /* #d08770 */
+  --red: 354 42% 56%;
+  --nlp: 14 35% 30%;
+
+  --calendar-lime: 92 28% 35%;
+  --calendar-orange: 14 45% 50%;
+  --calendar-red: 354 35% 45%;
+
+  --sidebar: 222 16% 28%; /* #3b4252 */
+  --sidebar-primary: 220 16% 32%;
+  --sidebar-primary-foreground: 218 27% 94%;
+  --sidebar-border: 220 16% 36%;
+
+  --calendar-border: 220 16% 30%;
+
+  --tooltip: 222 16% 28%;
+
+  --accent-red: 354 42% 56%;
+  --accent-orange: 14 51% 63%;
+  --accent-yellow: 40 71% 73%; /* #ebcb8b */
+  --accent-lime: 92 28% 50%;
+  --accent-blue: 213 32% 52%; /* #5e81ac */
+  --accent-purple: 311 20% 63%; /* #b48ead */
+  --accent-pink: 311 20% 63%;
+  --accent-teal: 179 25% 65%; /* #8fbcbb */
+  --accent-coral: 14 45% 58%;
+  --accent-gold: 40 60% 60%;
+  --accent-deep-blue: 213 32% 48%;
+  --accent-rose: 354 42% 60%;
+  --accent-light-red: 354 35% 65%;
+  --accent-brick: 14 40% 48%;
+  --accent-slate: 220 16% 42%;
+
+  --form-background: 220 16% 18%;
+  --form-foreground: 218 27% 94%;
+  --form-border: 220 16% 32%;
+  --form-border-accent: 220 16% 42%;
+  --input-background: 222 16% 28%;
+  --form-label: 218 15% 55%;
+  --form-label-accent: 218 20% 75%;
+  --form-link: 193 43% 60%;
+  --form-link-accent: 193 43% 72%;
+  --form-button: 193 43% 67%;
+  --form-button-accent: 193 43% 72%;
+  --form-muted: 218 12% 50%;
+}
