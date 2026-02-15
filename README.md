@@ -1,204 +1,117 @@
-# Tatsu - The Ultimate Todo App
+# Fokus
 
-## Introduction
-Tatsu is a todo app on steroids, designed to keep you motivated and productive. Key features include:
+A single-user, self-hosted todo and productivity app built with Next.js.
 
-**Evolving Avatars**: Your avatar grows as you complete your todo goals (TBD).
+This project is **heavily based on [Tatsu](https://github.com/ZhengJiawen44/tatsu)** by [@ZhengJiawen44](https://github.com/ZhengJiawen44). Along the way I decided I wasn't interested in hosting this for other people, so I forked it and started reshaping it for my own personal use — adding CalDAV sync, removing features I didn't need, and tailoring the whole thing to a single-user setup. I'll probably steer it even further from the original over time. All credit for making this possible goes to ZhengJiawen44.
 
-**Long-term Todo Tracking**: Stay on top of your big-picture tasks (TBD).
+## Features
 
-**Notion-like Editor**: A powerful, intuitive interface for note taking.
+- **Tasks** with drag-and-drop reordering, priorities, projects, and natural language date input ("tomorrow at 5pm")
+- **Recurring tasks** (RFC 5545 RRULE) with per-instance editing
+- **Calendar view** (month/week/day)
+- **Notes** with a Tiptap rich-text editor
+- **Projects** with color coding
+- **CalDAV sync** — bidirectional sync with CalDAV servers (tested with Baikal), supports both VTODO and VEVENT, Basic and Digest auth
+- **Admin panel** at `/admin` for user setup, password reset, and data management
+- **Internationalization** — ar, de, en, es, fr, it, ja, ms, pt, ru, sv, zh
+- **Dark mode**
 
-**End-to-End Encrypted File Uploads**: Securely store and manage your files.
+## Differences from Tatsu
 
-More exciting features coming soon! 
+- Removed public registration — user is created via the admin panel
+- Removed Vault / S3 / file encryption
+- Removed feedback system and popups
+- Switched from PostgreSQL to SQLite
+- Added CalDAV sync engine
+- Added admin panel (password-protected, separate from user auth)
+- Single-user model throughout
 
-## End to End encryption
-All files are end to end encrypted and stored in a aws s3 bucket. the module designated for retrieval, and encryption/decryption of files is called "Vault" in the app. you can read more about how I implemented it [here](https://excalidraw.com/#room=8feca98c331feac8d27b,XeidBTw8Bp2qXTVBjf41Yg)
+## Requirements
 
-![e2ee](images/e2ee1.png)![e2ee](images/e2ee2.png)
+- Node.js 18+
+- npm
 
-## RoadMap
-https://github.com/ZhengJiawen44/tatsu/wiki/Roadmap
+## Setup
 
-## Running with Docker (Recommended)
-
-You can run the prebuilt image directly from GitHub Container Registry:
+### 1. Clone and install
 
 ```bash
-docker run -d \
-  --name tatsu \
-  -p 3000:3000 \
-  --env-file .env \
-  --restart unless-stopped \
-  ghcr.io/zhengjiawen44/tatsu:latest
-```
-
-alternatively, you can build the image yourself.
-The project includes a **Dockerfile** and **docker-compose.yml** for containerized development.
-
-Make sure **Docker** and **Docker Compose** are installed.
-
-Copy **.env.example** to **.env** and fill in the required values (AWS credentials, database URL, etc.).
-
-**Note**: Ensure DATABASE_URL in your .env matches the values in docker-compose.yml. If you haven't changed anything there, simply use the one provided in .env.example.
-
-Build and start the containers:
-```bash
-docker compose up --build
-```
-
-This will:
-- Start a Postgres database (postgres:15) with persistent storage.
-- Start the Next.js app inside a Node.js container.
-- Run Prisma migrations automatically on startup.
-
-Once running, the app will be available at http://localhost:3000.
-
-To stop the containers:
-```bash
-docker compose down
-```
-
-## Running Locally
-
-### Prerequisites
-- Node.js 18+ installed
-- **PostgreSQL 12+** or **SQLite** (no install needed)
-
-Tatsu supports both PostgreSQL and SQLite. The database is selected automatically based on your `DATABASE_URL`:
-- Starts with `postgresql://` → PostgreSQL
-- Starts with `file:` → SQLite
-
-### Option A: SQLite Setup (Simplest)
-
-SQLite requires no external database server. Great for local development and single-user deployments.
-
-1. Copy `.env.example` to `.env` and set:
-```bash
-DATABASE_URL="file:./dev.db"
-```
-
-2. Install dependencies:
-```bash
+git clone https://github.com/yourusername/fokus.git
+cd fokus
 npm install
 ```
 
-3. Push the schema to create the database:
+### 2. Configure environment
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and fill in the required values:
+
+| Variable | Required | Description |
+|---|---|---|
+| `AUTH_SECRET` | Yes | `openssl rand -base64 32` |
+| `DATABASE_URL` | Yes | SQLite path, e.g. `file:./dev.db` |
+| `ADMIN_PASSWORD` | Yes | Password for the admin panel at `/admin` |
+| `NEXTAUTH_URL` | Yes | App URL, e.g. `http://localhost:3000` |
+| `API_URL` | Yes | API base, e.g. `http://localhost:3000/api` |
+| `CRONJOB_SECRET` | Yes | `openssl rand -base64 32` |
+| `CALDAV_ENCRYPTION_KEY` | No | 64-char hex for CalDAV password encryption (`openssl rand -hex 32`) |
+| `CALDAV_CRON_SECRET` | No | Secret for CalDAV sync cron endpoint |
+
+### 3. Initialize the database
+
 ```bash
 npm run db:push
 ```
 
-4. Start the development server:
+### 4. Run
+
+**Development:**
+
 ```bash
 npm run dev
 ```
 
-Then, open http://localhost:3000 in your browser.
-
-**Note**: SQLite uses `prisma db push` instead of `prisma migrate dev`. The database file (`dev.db`) will be created automatically in the `prisma/` directory.
-
-### Option B: PostgreSQL Setup
-
-#### 1. Install PostgreSQL (Fedora/RHEL)
-```bash
-sudo dnf install postgresql postgresql-server
-sudo postgresql-setup --initdb
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
-```
-
-For other operating systems, refer to the [official PostgreSQL documentation](https://www.postgresql.org/download/).
-
-#### 2. Configure PostgreSQL Authentication
-**Note**: This step may not be necessary depending on your PostgreSQL installation. If you can already connect using `psql -U myuser -d mydb -h localhost -W` with a password, skip this step.
-Edit the PostgreSQL configuration file to allow password authentication:
+**Production:**
 
 ```bash
-sudo nano /var/lib/pgsql/data/pg_hba.conf
+npm run build
+npm run start
 ```
 
-Change the following lines from `ident` to `md5`:
+Open `http://localhost:3000`. You'll be redirected to `/admin` to create your user account on first run.
 
-```
-# IPv4 local connections:
-host    all             all             127.0.0.1/32            md5
-# IPv6 local connections:
-host    all             all             ::1/128                 md5
-```
-
-Restart PostgreSQL to apply changes:
+## Docker
 
 ```bash
-sudo systemctl restart postgresql
+docker compose up --build
 ```
 
-#### 3. Create Database User and Database
+This starts the app with SQLite and persistent storage. Make sure `AUTH_SECRET` and `CRONJOB_SECRET` are set in your `.env` — docker-compose reads them from there.
 
-Connect to PostgreSQL as the postgres superuser:
+## Project structure
 
-```bash
-sudo -u postgres psql
+```
+app/
+  [locale]/              Locale-routed pages
+    (auth)/              Login page
+    admin/               Admin panel
+    app/                 Main app (auth-gated)
+  api/                   REST API routes
+components/              React components
+features/                Feature-specific logic
+lib/                     Utilities, Prisma client, CalDAV sync engine
+messages/                i18n translation files
+prisma/
+  schema.sqlite.prisma   Database schema (source of truth)
 ```
 
-Create a user with a password and necessary privileges:
+## Tech stack
 
-```sql
--- Create user with password
-CREATE USER myuser WITH PASSWORD 'mypass';
+Next.js 15 (App Router) · React 18 · TypeScript · Prisma (SQLite) · Tailwind CSS · shadcn/ui · TanStack Query · NextAuth.js v5 · next-intl · Tiptap · chrono-node · tsdav
 
--- Grant create database privilege (required for Prisma migrations)
-ALTER USER myuser CREATEDB;
+## License
 
--- Create the database with myuser as owner
-CREATE DATABASE mydb OWNER myuser;
-
--- Exit psql
-\q
-```
-
-#### 4. Verify Connection
-
-Test that you can connect with the new user:
-
-```bash
-psql -U myuser -d mydb -h localhost -W
-```
-
-Enter your password when prompted. If successful, you'll see the psql prompt. Type `\q` to exit.
-
-### Application Setup
-
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Copy `.env.example` to `.env` and update with your PostgreSQL credentials:
-```bash
-DATABASE_URL="postgresql://myuser:mypass@localhost:5432/mydb"
-```
-
-3. Run Prisma migrations to set up the database schema:
-```bash
-npx prisma migrate dev --name init
-```
-
-This will create all the necessary tables in your database.
-
-4. Start the development server:
-```bash
-npm run dev
-```
-
-Then, open http://localhost:3000 in your browser.
-
-### Additional Prisma Commands
-
-- **Generate Prisma Client**: `npx prisma generate`
-- **Open Prisma Studio** (database GUI): `npx prisma studio`
-- **Reset database** (drops all data): `npx prisma migrate reset` (PostgreSQL only)
-- **Push schema** (SQLite or quick sync): `npm run db:push`
-
-## Fonts
-This project uses next/font for optimized font loading. It features Poppins, a modern and elegant font from Google.
+See upstream [Tatsu](https://github.com/ZhengJiawen44/tatsu) for license information.
