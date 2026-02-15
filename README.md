@@ -36,7 +36,7 @@ This project is **heavily based on [Tatsu](https://github.com/ZhengJiawen44/tats
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/yourusername/fokus.git
+git clone https://github.com/klppl/fokus.git
 cd fokus
 npm install
 ```
@@ -85,11 +85,26 @@ Open `http://localhost:3000`. You'll be redirected to `/admin` to create your us
 
 ## Docker
 
+Pull and run the prebuilt image from GitHub Container Registry:
+
 ```bash
-docker compose up --build
+docker run -d \
+  --name fokus \
+  -p 3000:3000 \
+  --env-file .env \
+  -e DATABASE_URL=file:./data/fokus.db \
+  -v fokus_data:/app/data \
+  --restart unless-stopped \
+  ghcr.io/klppl/fokus:latest
 ```
 
-This starts the app with SQLite and persistent storage. Make sure `AUTH_SECRET` and `CRONJOB_SECRET` are set in your `.env` — docker-compose reads them from there.
+Or use docker compose:
+
+```bash
+docker compose up -d
+```
+
+The database is stored in a persistent volume. Make sure your `.env` has all required variables set (see the table above).
 
 ## Project structure
 

@@ -38,6 +38,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  output: "standalone",
   reactStrictMode: false,
   experimental: {
     staleTimes: {

@@ -1,22 +1,15 @@
 services:
-  tatsu:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: tatsu_app
-    restart: always
+  fokus:
+    image: ghcr.io/klppl/fokus:latest
+    container_name: fokus
+    restart: unless-stopped
     ports:
       - "3000:3000"
+    env_file: .env
     environment:
-      DATABASE_URL: file:./dev.db
-      NODE_ENV: production
-      NEXTAUTH_URL: http://localhost:3000
-      AUTH_TRUST_HOST: "true"
-      AUTH_SECRET: ${AUTH_SECRET}
-      CRONJOB_SECRET: ${CRONJOB_SECRET}
-    command: sh -c "npx prisma db push && npm run start"
+      DATABASE_URL: file:./data/fokus.db
     volumes:
-      - tatsu_data:/app/prisma
+      - fokus_data:/app/data
 
 volumes:
-  tatsu_data:
+  fokus_data:
