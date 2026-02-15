@@ -50,6 +50,31 @@ const relativeTranslations: Record<string, Record<string, string>> = {
     tomorrow: "Завтра",
     yesterday: "Вчера",
   },
+  fr: {
+    today: "Aujourd'hui",
+    tomorrow: "Demain",
+    yesterday: "Hier",
+  },
+  it: {
+    today: "Oggi",
+    tomorrow: "Domani",
+    yesterday: "Ieri",
+  },
+  pt: {
+    today: "Hoje",
+    tomorrow: "Amanhã",
+    yesterday: "Ontem",
+  },
+  sv: {
+    today: "Idag",
+    tomorrow: "Imorgon",
+    yesterday: "Igår",
+  },
+  ms: {
+    today: "Hari ini",
+    tomorrow: "Esok",
+    yesterday: "Semalam",
+  },
 };
 
 export function getDisplayDate(
@@ -78,7 +103,7 @@ export function getDisplayDate(
     const timeFormatter = getFormatter(locale, {
       hour: "numeric",
       minute: "2-digit",
-      hour12: true,
+      hour12: false,
       timeZone: timezone, //  Use consistent timezone
     });
     timeString = ` ${timeFormatter.format(date)}`;

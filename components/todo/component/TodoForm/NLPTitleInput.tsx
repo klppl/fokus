@@ -7,11 +7,14 @@ import { cn } from "@/lib/utils";
 import { NonNullableDateRange } from "@/types";
 import * as chrono from "chrono-node";
 import { addHours } from "date-fns";
-import React, { SetStateAction, useEffect, useRef, useState, useMemo } from "react";
-import { useTranslations } from "next-intl";
+import React, { SetStateAction, useEffect, useRef, useState, useMemo, useCallback } from "react";
+import { useTranslations, useMessages } from "next-intl";
 import { useLocale } from "next-intl";
 import { useProjectMetaData } from "@/components/Sidebar/Project/query/get-project-meta";
 import { ProjectAutoComplete } from "./ProjectAutoComplete";
+
+// Locales not natively supported by chrono-node
+const CHRONO_UNSUPPORTED = ["sv", "ms", "ar"];
 
 // --------------------------- NLPTitleInput ---------------------------
 
@@ -43,7 +46,82 @@ export default function NLPTitleInput({
 }: NLPTitleInputProps) {
   const locale = useLocale();
   const todayDict = useTranslations("today");
+  const messages = useMessages();
   const isComposing = useRef(false);
+
+  // Build sorted keyword replacement pairs (longest first to avoid partial matches)
+  const nlpKeywords = useMemo(() => {
+    if (!CHRONO_UNSUPPORTED.includes(locale)) return null;
+    const raw = (messages as Record<string, unknown>).nlpDateKeywords as
+      | Record<string, string>
+      | undefined;
+    if (!raw) return null;
+    return Object.entries(raw).sort(
+      ([a], [b]) => b.length - a.length,
+    );
+  }, [locale, messages]);
+
+  // Replace locale keywords with English equivalents, tracking index shifts
+  const replaceKeywords = useCallback(
+    (text: string): { translated: string; indexMap: (idx: number) => number } => {
+      if (!nlpKeywords) return { translated: text, indexMap: (i) => i };
+
+      const lowerText = text.toLowerCase();
+      // Track replacements as [origStart, origEnd, replacement]
+      const replacements: [number, number, string][] = [];
+
+      for (const [keyword, english] of nlpKeywords) {
+        let searchFrom = 0;
+        while (true) {
+          const idx = lowerText.indexOf(keyword, searchFrom);
+          if (idx === -1) break;
+          // Check not overlapping with an existing replacement
+          const overlaps = replacements.some(
+            ([s, e]) => idx < e && idx + keyword.length > s,
+          );
+          if (!overlaps) {
+            replacements.push([idx, idx + keyword.length, english]);
+          }
+          searchFrom = idx + 1;
+        }
+      }
+
+      if (!replacements.length) return { translated: text, indexMap: (i) => i };
+
+      replacements.sort((a, b) => a[0] - b[0]);
+
+      // Build translated string and offset map
+      let translated = "";
+      let origPos = 0;
+      // Store cumulative shift at each replacement boundary
+      const shifts: { origEnd: number; delta: number }[] = [];
+      let cumDelta = 0;
+
+      for (const [start, end, replacement] of replacements) {
+        translated += text.slice(origPos, start) + replacement;
+        cumDelta += replacement.length - (end - start);
+        shifts.push({ origEnd: end, delta: cumDelta });
+        origPos = end;
+      }
+      translated += text.slice(origPos);
+
+      // Map a translated-string index back to original-string index
+      const indexMap = (translatedIdx: number): number => {
+        let delta = 0;
+        for (const s of shifts) {
+          if (translatedIdx >= s.origEnd + s.delta - delta) {
+            delta = s.delta;
+          } else {
+            break;
+          }
+        }
+        return translatedIdx - delta;
+      };
+
+      return { translated, indexMap };
+    },
+    [nlpKeywords],
+  );
 
   // --- Dropdown state ---
   const [projectDropdownVisible, setProjectDropdownVisible] = useState(false);
@@ -72,26 +150,34 @@ export default function NLPTitleInput({
 
   // --- Helpers ---
 
-  const parseDate = (text: string) => {
+  const parseDate = (text: string): { results: chrono.ParsedResult[]; originalIndex: (i: number) => number } => {
+    // For chrono-unsupported locales, translate keywords first
+    if (CHRONO_UNSUPPORTED.includes(locale)) {
+      const { translated, indexMap } = replaceKeywords(text);
+      const results = chrono.en.parse(translated);
+      return { results, originalIndex: indexMap };
+    }
+
+    const identity = (i: number) => i;
     switch (locale) {
       case "ja":
-        return chrono.ja.parse(text);
+        return { results: chrono.ja.parse(text), originalIndex: identity };
       case "fr":
-        return chrono.fr.parse(text);
+        return { results: chrono.fr.parse(text), originalIndex: identity };
       case "ru":
-        return chrono.ru.parse(text);
+        return { results: chrono.ru.parse(text), originalIndex: identity };
       case "es":
-        return chrono.es.parse(text);
+        return { results: chrono.es.parse(text), originalIndex: identity };
       case "it":
-        return chrono.it.parse(text);
+        return { results: chrono.it.parse(text), originalIndex: identity };
       case "de":
-        return chrono.de.parse(text);
+        return { results: chrono.de.parse(text), originalIndex: identity };
       case "pt":
-        return chrono.pt.parse(text);
+        return { results: chrono.pt.parse(text), originalIndex: identity };
       case "zh":
-        return chrono.zh.parse(text);
+        return { results: chrono.zh.parse(text), originalIndex: identity };
       default:
-        return chrono.en.parse(text);
+        return { results: chrono.en.parse(text), originalIndex: identity };
     }
   };
 
@@ -239,16 +325,27 @@ export default function NLPTitleInput({
     let cleanTitle = text;
 
     // chrono
-    const parsedResults = parseDate(text);
+    const { results: parsedResults, originalIndex } = parseDate(text);
     if (parsedResults.length) {
       const parsed = parsedResults[0];
 
-      const dateWrapRes = highlightDatesInHtml(html, parsed);
+      // Map chrono index back to original text position for unsupported locales
+      const origIdx = originalIndex(parsed.index as number);
+      const origEnd = originalIndex((parsed.index as number) + (parsed.text as string).length);
+      const origMatchLen = origEnd - origIdx;
+      const origMatchText = text.slice(origIdx, origEnd);
+
+      // Create a virtual ParsedResult with original-text coordinates for highlighting
+      const highlightParsed = {
+        ...parsed,
+        index: origIdx,
+        text: origMatchText,
+      } as chrono.ParsedResult;
+
+      const dateWrapRes = highlightDatesInHtml(html, highlightParsed);
       html = dateWrapRes.html;
 
-      const idx = parsed.index as number;
-      const matched = parsed.text as string;
-      cleanTitle = text.slice(0, idx) + text.slice(idx + matched.length);
+      cleanTitle = text.slice(0, origIdx) + text.slice(origIdx + origMatchLen);
 
       const from = parsed.start.date();
       const to = parsed.end?.date() ?? addHours(from, 3);

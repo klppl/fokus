@@ -14,8 +14,8 @@ type Props = {
 };
 
 export const metadata: Metadata = {
-  title: "Fokus",
-  description: "Organize your tasks, schedule your day, and plan projects with Fokus."
+  title: "fokus: Simply sorted.",
+  description: "Simply sorted. Organize your tasks, schedule your day, and plan projects with fokus."
 };
 
 const poppins = Poppins({

@@ -215,5 +215,28 @@
     "lightRed": "Merah Muda",
     "brick": "Bata",
     "slate": "Slat"
+  },
+  "nlpDateKeywords": {
+    "hari ini": "today",
+    "esok": "tomorrow",
+    "semalam": "yesterday",
+    "minggu depan": "next week",
+    "bulan depan": "next month",
+    "isnin depan": "next monday",
+    "selasa depan": "next tuesday",
+    "rabu depan": "next wednesday",
+    "khamis depan": "next thursday",
+    "jumaat depan": "next friday",
+    "sabtu depan": "next saturday",
+    "ahad depan": "next sunday",
+    "dalam satu hari": "in 1 day",
+    "dalam satu minggu": "in 1 week",
+    "dalam satu bulan": "in 1 month",
+    "pagi": "morning",
+    "tengah hari": "afternoon",
+    "petang": "evening",
+    "malam": "night",
+    "pukul": "at",
+    "pada": "at"
   }
 }

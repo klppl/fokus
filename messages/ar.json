@@ -215,5 +215,32 @@
     "lightRed": "أحمر فاتح",
     "brick": "قرميدي",
     "slate": "صخري"
+  },
+  "nlpDateKeywords": {
+    "اليوم": "today",
+    "غدا": "tomorrow",
+    "غداً": "tomorrow",
+    "أمس": "yesterday",
+    "الأسبوع القادم": "next week",
+    "الشهر القادم": "next month",
+    "الاثنين القادم": "next monday",
+    "الثلاثاء القادم": "next tuesday",
+    "الأربعاء القادم": "next wednesday",
+    "الخميس القادم": "next thursday",
+    "الجمعة القادم": "next friday",
+    "السبت القادم": "next saturday",
+    "الأحد القادم": "next sunday",
+    "بعد يوم": "in 1 day",
+    "بعد أسبوع": "in 1 week",
+    "بعد شهر": "in 1 month",
+    "صباحا": "morning",
+    "صباحاً": "morning",
+    "ظهرا": "afternoon",
+    "ظهراً": "afternoon",
+    "مساء": "evening",
+    "مساءً": "evening",
+    "ليلا": "night",
+    "ليلاً": "night",
+    "الساعة": "at"
   }
 }

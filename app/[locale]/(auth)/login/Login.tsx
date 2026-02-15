@@ -57,9 +57,12 @@ export default function LoginPage() {
         className="z-50 w-screen h-screen bg-form-background md:w-[70%] md:h-fit lg:w-[60%] xl:w-[50%] 2xl:w-[38%] md:rounded-xl p-[55px] md:p-[85px] shadow-[0_1px_2px_rgba(0,0,0,0.1),0_2px_4px_rgba(0,0,0,0.1),0_4px_8px_rgba(0,0,0,0.15),0_8px_16px_rgba(0,0,0,0.15),0_16px_32px_rgba(0,0,0,0.2)]"
       >
         {/* header */}
-        <h1 className="text-[35px] md:text-[38px] lg:text-[45px] text-white mb-[37px]">
-          {t("title")}
-        </h1>
+        <div className="mb-[37px]">
+          <h1 className="text-[35px] md:text-[38px] lg:text-[45px] text-white">
+            fokus
+          </h1>
+          <p className="text-sm text-white/60 tracking-wide">Simply sorted.</p>
+        </div>
 
         {/* form fields */}
         <div id="formFieldContainer" className="flex flex-col gap-[43px] mb-[40px]">

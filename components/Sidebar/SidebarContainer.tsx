@@ -67,6 +67,10 @@ const SidebarContainer = () => {
       >
         <div className="flex flex-col justify-between flex-1 min-w-0 m-0 p-0">
           <div className="px-4 mt-2">
+            <div className="flex items-baseline gap-2 mb-2 px-2">
+              <span className="text-lg font-semibold text-foreground">fokus</span>
+              <span className="text-xs text-muted-foreground">Simply sorted.</span>
+            </div>
             <UserCard />
           </div>
           <div className="flex flex-col gap-1 overflow-y-scroll   h-full  my-2 px-4 text-muted-foreground">

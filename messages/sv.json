@@ -218,5 +218,28 @@
     "lightRed": "Ljusröd",
     "brick": "Tegelröd",
     "slate": "Skiffergrå"
+  },
+  "nlpDateKeywords": {
+    "idag": "today",
+    "imorgon": "tomorrow",
+    "igår": "yesterday",
+    "nästa vecka": "next week",
+    "nästa månad": "next month",
+    "nästa måndag": "next monday",
+    "nästa tisdag": "next tuesday",
+    "nästa onsdag": "next wednesday",
+    "nästa torsdag": "next thursday",
+    "nästa fredag": "next friday",
+    "nästa lördag": "next saturday",
+    "nästa söndag": "next sunday",
+    "om en dag": "in 1 day",
+    "om en vecka": "in 1 week",
+    "om en månad": "in 1 month",
+    "morgon": "morning",
+    "förmiddag": "morning",
+    "eftermiddag": "afternoon",
+    "kväll": "evening",
+    "natt": "night",
+    "kl": "at"
   }
 }

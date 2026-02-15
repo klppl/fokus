@@ -25,6 +25,9 @@ coverage/
 .DS_Store
 *.tsbuildinfo
 
+# claude code
+.claude/settings.local.json
+
 # docker
 *.db
 *.db-journal
