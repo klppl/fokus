@@ -124,7 +124,7 @@ export async function GET(
         projectID: id,
       },
       include: { instances: true },
-    })) as recurringTodoItemType[];
+    })) as unknown as recurringTodoItemType[];
 
     //Collect future reccuring todos
     const futureRecurringTodos = recurringParents.filter(({ dtstart }) => {

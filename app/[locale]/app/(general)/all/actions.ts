@@ -8,67 +8,23 @@ import { overrideBy } from "@/lib/overrideBy";
 import { prisma } from "@/lib/prisma/client";
 import { resolveTimezone } from "@/lib/resolveTimeZone";
 import { TodoItemType, recurringTodoItemType } from "@/types";
-import { startOfDay, endOfDay } from "date-fns";
-import { toZonedTime, fromZonedTime } from "date-fns-tz";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
+import { startOfDay, addWeeks } from "date-fns";
 
-export async function getUserPreferences() {
-  const session = await auth();
-  if (!session?.user?.id) return null;
-  const preferences = await prisma.userPreferences.findUnique({
-    where: { userID: session.user.id },
-  });
-  return preferences;
-}
-
-export async function getCompletedTodos() {
-  const session = await auth();
-  if (!session?.user?.id) return null;
-  const completedTodos = await prisma.completedTodo.findMany({
-    where: { userID: session.user.id },
-    orderBy: { dtstart: "desc" },
-  });
-  const formatted = completedTodos.map((todo) => {
-    return { ...todo, daysToComplete: Number(todo.daysToComplete) };
-  });
-  return formatted;
-}
-
-export async function getProjectMetaData() {
-  const session = await auth();
-  if (!session?.user?.id) return null;
-  const projects = await prisma.project.findMany({
-    where: { userID: session.user.id },
-    orderBy: { createdAt: "desc" },
-    select: { id: true, name: true, createdAt: true, color: true },
-  });
-  const projectMap = Object.fromEntries(
-    projects.map(({ id, ...rest }) => [id, rest]),
-  );
-  return projectMap;
-}
-
-export async function getUserTimezone() {
-  const session = await auth();
-  if (!session?.user?.id) return null;
-  const timezone = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { timeZone: true },
-  });
-  return timezone;
-}
-
-export async function getTodayTodos(): Promise<TodoItemType[]> {
+export async function getAllTodos(weeks: number = 4): Promise<TodoItemType[]> {
   const session = await auth();
   const user = session?.user;
   if (!user?.id) {
     throw new UnauthorizedError("You must be logged in to do this");
   }
   const timeZone = await resolveTimezone(user);
-  const now = new Date();
-  const userNow = toZonedTime(now, timeZone);
-  const dateRangeStart = fromZonedTime(startOfDay(userNow), timeZone);
-  const dateRangeEnd = fromZonedTime(endOfDay(userNow), timeZone);
-  // Fetch One-Off Todos
+
+  const nowInTz = toZonedTime(new Date(), timeZone);
+  const todayStartLocal = startOfDay(nowInTz);
+  const dateRangeStart = fromZonedTime(todayStartLocal, timeZone);
+  const dateRangeEnd = fromZonedTime(addWeeks(todayStartLocal, weeks), timeZone);
+
+  // Fetch all uncompleted one-off todos
   const oneOffTodos = await prisma.todo.findMany({
     where: {
       userID: user.id,
@@ -83,7 +39,8 @@ export async function getTodayTodos(): Promise<TodoItemType[]> {
     },
     orderBy: { createdAt: "desc" },
   });
-  // Fetch all Recurring todos
+
+  // Fetch all recurring todos
   const recurringParents = (await prisma.todo.findMany({
     where: {
       userID: user.id,
@@ -108,10 +65,12 @@ export async function getTodayTodos(): Promise<TodoItemType[]> {
     dateRangeStart,
     dateRangeEnd,
   });
+
   const allGhosts = [...mergedUsingRecurrId, ...movedTodos].filter((todo) => {
-    return todo.due >= dateRangeStart && todo.completed === false;
+    return todo.completed === false;
   });
-  // Normalize one-off todos to match TodoItemType (add instanceDate: null)
+
+  // Normalize one-off todos to match TodoItemType
   const normalizedOneOffTodos = oneOffTodos.map((todo) => ({
     ...todo,
     instanceDate: null as Date | null,
@@ -121,17 +80,18 @@ export async function getTodayTodos(): Promise<TodoItemType[]> {
   const allTodos = [...normalizedOneOffTodos, ...allGhosts].sort(
     (a, b) => a.order - b.order,
   );
+
   const todoWithFormattedDates = allTodos.map((todo) => {
     const todoInstanceDate = todo.instanceDate
       ? new Date(todo.instanceDate)
       : null;
     const todoInstanceDateTime = todoInstanceDate?.getTime();
     const todoId = `${todo.id}:${todoInstanceDateTime}`;
-
     return {
       ...todo,
       id: todoId,
     };
   });
+
   return todoWithFormattedDates as unknown as TodoItemType[];
 }

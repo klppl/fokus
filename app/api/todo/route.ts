@@ -130,7 +130,7 @@ export async function GET(req: NextRequest) {
         completed: false,
       },
       include: { instances: true },
-    })) as recurringTodoItemType[];
+    })) as unknown as recurringTodoItemType[];
 
     // Expand RRULEs to generate occurrences happening "Today"
     const ghostTodos = generateTodosFromRRule(recurringParents, timeZone, {

@@ -10,6 +10,7 @@ type UserPreferences = {
     sortBy: SortBy | null;
     groupBy: GroupBy | null;
     direction: Direction | null;
+    upcomingDays: number;
 };
 
 type UserPreferencesContextType = {

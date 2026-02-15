@@ -53,7 +53,9 @@
     "toasts": {
       "googleError": "Nous n'avons pas pu vous connecter à Google pour le moment",
       "discordError": "Nous n'avons pas pu vous connecter à Discord pour le moment",
-      "genericError": "Nous ne pouvons pas vous inscrire pour le moment"
+      "genericError": "Nous ne pouvons pas vous inscrire pour le moment",
+      "accountCreated": "Compte créé",
+      "canLogin": "Vous pouvez maintenant vous connecter."
     }
   },
   "app": {
@@ -62,6 +64,7 @@
     "cancel": "Annuler",
     "save": "Enregistrer",
     "today": "Aujourd'hui",
+    "allTasks": "Toutes les tâches",
     "yesterday": "Hier",
     "tomorrow": "Demain",
     "nextWeek": "La semaine prochaine",
@@ -99,7 +102,9 @@
       "never": "Jamais",
       "onDate": "À la date (inclus)"
     },
-    "descPlaceholder": "description"
+    "descPlaceholder": "description",
+    "loadMore": "Charger plus",
+    "nextWeeks": "Prochaines {count} semaines"
   },
   "today": {
     "saveInstance": "Enregistrer l'instance",
@@ -122,7 +127,11 @@
     "settingMenu": {
       "logout": "Déconnexion",
       "theme": "Thème",
-      "shortcuts": "Raccourcis"
+      "shortcuts": "Raccourcis",
+      "upcomingDays": "Jours à venir",
+      "upcomingNone": "Aucun",
+      "upcomingDay": "jour",
+      "upcomingDaysLabel": "jours"
     },
     "noteMenu": {
       "rename": "renommer",

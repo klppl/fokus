@@ -54,7 +54,9 @@
     "toasts": {
       "googleError": "We could not sign you in to Google at the moment",
       "discordError": "We could not sign you in to Discord at the moment",
-      "genericError": "We cannot register you at this moment"
+      "genericError": "We cannot register you at this moment",
+      "accountCreated": "Account created",
+      "canLogin": "You can now log in."
     }
   },
   "app": {
@@ -63,6 +65,7 @@
     "save": "Save",
     "clear": "Clear",
     "today": "Today",
+    "allTasks": "All Tasks",
     "yesterday": "Yesterday",
     "tomorrow": "Tomorrow",
     "nextWeek": "Next week",
@@ -100,7 +103,9 @@
       "never": "Never",
       "onDate": "On Date (inclusive)"
     },
-    "descPlaceholder": "description"
+    "descPlaceholder": "description",
+    "loadMore": "Load more",
+    "nextWeeks": "Next {count} weeks"
   },
 
   "today": {
@@ -124,7 +129,11 @@
     "settingMenu": {
       "logout": "Log out",
       "theme": "Theme",
-      "shortcuts": "Shortcuts"
+      "shortcuts": "Shortcuts",
+      "upcomingDays": "Upcoming days",
+      "upcomingNone": "None",
+      "upcomingDay": "day",
+      "upcomingDaysLabel": "days"
     },
     "noteMenu": {
       "rename": "rename",

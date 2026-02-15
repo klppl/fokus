@@ -56,6 +56,10 @@ export const MenuProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
 
+    if (pathName.includes("/all")) {
+      setActiveMenu({ name: "AllTasks" });
+      return;
+    }
     if (pathName.includes("todo")) {
       setActiveMenu({ name: "Todo" });
       return;

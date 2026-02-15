@@ -53,7 +53,9 @@
     "toasts": {
       "googleError": "Al momento non è stato possibile accedere con Google",
       "discordError": "Al momento non è stato possibile accedere con Discord",
-      "genericError": "Non è possibile registrarsi in questo momento"
+      "genericError": "Non è possibile registrarsi in questo momento",
+      "accountCreated": "Account creato",
+      "canLogin": "Ora puoi accedere."
     }
   },
   "app": {
@@ -62,6 +64,7 @@
     "clear": "साफ़ करें",
     "save": "Salva",
     "today": "Oggi",
+    "allTasks": "Tutti i compiti",
     "yesterday": "Ieri",
     "tomorrow": "Domani",
     "nextWeek": "Prossima settimana",
@@ -99,7 +102,9 @@
       "never": "Mai",
       "onDate": "Alla data (inclusa)"
     },
-    "descPlaceholder": "descrizione"
+    "descPlaceholder": "descrizione",
+    "loadMore": "Carica altro",
+    "nextWeeks": "Prossime {count} settimane"
   },
   "today": {
     "saveInstance": "Salva istanza",
@@ -122,7 +127,11 @@
     "settingMenu": {
       "logout": "Esci",
       "theme": "Tema",
-      "shortcuts": "Scorciatoie"
+      "shortcuts": "Scorciatoie",
+      "upcomingDays": "Giorni a venire",
+      "upcomingNone": "Nessuno",
+      "upcomingDay": "giorno",
+      "upcomingDaysLabel": "giorni"
     },
     "noteMenu": {
       "rename": "rinomina",

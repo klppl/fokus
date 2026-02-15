@@ -53,7 +53,9 @@
     "toasts": {
       "googleError": "Não foi possível iniciar sessão no Google de momento",
       "discordError": "Não foi possível iniciar sessão no Discord de momento",
-      "genericError": "Não é possível registar-se de momento"
+      "genericError": "Não é possível registar-se de momento",
+      "accountCreated": "Conta criada",
+      "canLogin": "Já pode iniciar sessão."
     }
   },
   "app": {
@@ -62,6 +64,7 @@
     "clear": "Limpar",
     "save": "Guardar",
     "today": "Hoje",
+    "allTasks": "Todas as tarefas",
     "yesterday": "Ontem",
     "tomorrow": "Amanhã",
     "nextWeek": "Próxima semana",
@@ -99,7 +102,9 @@
       "never": "Nunca",
       "onDate": "Na Data (inclusive)"
     },
-    "descPlaceholder": "descrição"
+    "descPlaceholder": "descrição",
+    "loadMore": "Carregar mais",
+    "nextWeeks": "Próximas {count} semanas"
   },
   "today": {
     "saveInstance": "Guardar instância",
@@ -122,7 +127,11 @@
     "settingMenu": {
       "logout": "Sair",
       "theme": "Tema",
-      "shortcuts": "Atalhos"
+      "shortcuts": "Atalhos",
+      "upcomingDays": "Próximos dias",
+      "upcomingNone": "Nenhum",
+      "upcomingDay": "dia",
+      "upcomingDaysLabel": "dias"
     },
     "noteMenu": {
       "rename": "renomear",

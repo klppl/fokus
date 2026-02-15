@@ -54,6 +54,7 @@ model UserPreferences {
   sortBy            SortBy?
   groupBy           GroupBy?
   direction         Direction?
+  upcomingDays      Int       @default(0)
 }
 
 model Account {

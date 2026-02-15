@@ -44,6 +44,9 @@ export async function PATCH(req: NextRequest) {
         sortBy: parsedObj.data.sortBy,
         groupBy: parsedObj.data.groupBy,
         direction: parsedObj.data.direction,
+        ...(parsedObj.data.upcomingDays !== undefined && parsedObj.data.upcomingDays !== null
+          ? { upcomingDays: parsedObj.data.upcomingDays }
+          : {}),
       },
     });
 

@@ -53,7 +53,9 @@
     "toasts": {
       "googleError": "Не удалось войти через Google в данный момент",
       "discordError": "Не удалось войти через Discord в данный момент",
-      "genericError": "Не удалось зарегистрироваться"
+      "genericError": "Не удалось зарегистрироваться",
+      "accountCreated": "Аккаунт создан",
+      "canLogin": "Теперь вы можете войти."
     }
   },
   "app": {
@@ -62,6 +64,7 @@
     "clear": "Очистить",
     "save": "Сохранить",
     "today": "Сегодня",
+    "allTasks": "Все задачи",
     "yesterday": "Вчера",
     "tomorrow": "Завтра",
     "nextWeek": "На следующей неделе",
@@ -99,7 +102,9 @@
       "never": "Никогда",
       "onDate": "В дату (включительно)"
     },
-    "descPlaceholder": "описание"
+    "descPlaceholder": "описание",
+    "loadMore": "Загрузить ещё",
+    "nextWeeks": "Следующие {count} недель"
   },
   "today": {
     "saveInstance": "Сохранить экземпляр",
@@ -122,7 +127,11 @@
     "settingMenu": {
       "logout": "Выйти",
       "theme": "Тема",
-      "shortcuts": "Горячие клавиши"
+      "shortcuts": "Горячие клавиши",
+      "upcomingDays": "Предстоящие дни",
+      "upcomingNone": "Нет",
+      "upcomingDay": "день",
+      "upcomingDaysLabel": "дней"
     },
     "noteMenu": {
       "rename": "переименовать",

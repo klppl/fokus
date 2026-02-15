@@ -54,7 +54,9 @@
     "toasts": {
       "googleError": "Vi kunde inte logga in dig med Google just nu",
       "discordError": "Vi kunde inte logga in dig med Discord just nu",
-      "genericError": "Vi kan inte registrera dig just nu"
+      "genericError": "Vi kan inte registrera dig just nu",
+      "accountCreated": "Konto skapat",
+      "canLogin": "Du kan nu logga in."
     }
   },
   "app": {
@@ -63,6 +65,7 @@
     "save": "Spara",
     "clear": "Rensa",
     "today": "Idag",
+    "allTasks": "Alla uppgifter",
     "yesterday": "Igår",
     "tomorrow": "Imorgon",
     "nextWeek": "Nästa vecka",
@@ -100,7 +103,9 @@
       "never": "Aldrig",
       "onDate": "På datum (inklusive)"
     },
-    "descPlaceholder": "beskrivning"
+    "descPlaceholder": "beskrivning",
+    "loadMore": "Ladda fler",
+    "nextWeeks": "Nästa {count} veckor"
   },
 
   "today": {
@@ -124,7 +129,11 @@
     "settingMenu": {
       "logout": "Logga ut",
       "theme": "Tema",
-      "shortcuts": "Genvägar"
+      "shortcuts": "Genvägar",
+      "upcomingDays": "Kommande dagar",
+      "upcomingNone": "Inga",
+      "upcomingDay": "dag",
+      "upcomingDaysLabel": "dagar"
     },
     "noteMenu": {
       "rename": "byt namn",

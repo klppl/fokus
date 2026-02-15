@@ -172,4 +172,5 @@ export const userPreferencesSchema = z.object({
     .nullable()
     .optional(),
   direction: z.enum(["Ascending", "Descending"]).nullable().optional(),
+  upcomingDays: z.number().int().min(0).max(3).optional(),
 });

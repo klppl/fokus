@@ -7,6 +7,7 @@ import { useRouter } from "@/i18n/navigation";
 import { useToast } from "@/hooks/use-toast";
 import Spinner from "@/components/ui/spinner";
 import EyeToggle from "@/components/ui/eyeToggle";
+import { useTranslations } from "next-intl";
 
 type RegisterForm = {
   fname: string;
@@ -16,6 +17,7 @@ type RegisterForm = {
 };
 
 export default function RegisterPage() {
+  const t = useTranslations("register");
   const {
     register,
     handleSubmit,
@@ -48,15 +50,15 @@ export default function RegisterPage() {
       const result = await res.json();
 
       if (!res.ok) {
-        toast({ title: result.message || "Registration failed" });
+        toast({ title: result.message || t("toasts.genericError") });
         return;
       }
 
-      toast({ title: "Account created", description: "You can now log in." });
+      toast({ title: t("toasts.accountCreated"), description: t("toasts.canLogin") });
       router.push("/login");
     } catch (error) {
       console.error(error);
-      toast({ title: "Something went wrong" });
+      toast({ title: t("toasts.genericError") });
     }
   }
 
@@ -67,7 +69,7 @@ export default function RegisterPage() {
         className="z-50 w-screen h-screen bg-form-background md:w-[70%] md:h-fit lg:w-[60%] xl:w-[50%] 2xl:w-[38%] md:rounded-xl p-[55px] md:p-[85px] shadow-[0_1px_2px_rgba(0,0,0,0.1),0_2px_4px_rgba(0,0,0,0.1),0_4px_8px_rgba(0,0,0,0.15),0_8px_16px_rgba(0,0,0,0.15),0_16px_32px_rgba(0,0,0,0.2)]"
       >
         <h1 className="text-[35px] md:text-[38px] lg:text-[45px] text-white mb-[37px]">
-          Create Account
+          {t("title")}
         </h1>
 
         <div className="flex flex-col gap-[43px] mb-[40px]">
@@ -76,7 +78,7 @@ export default function RegisterPage() {
             <input
               {...register("fname")}
               type="text"
-              placeholder="Name"
+              placeholder={t("fields.fname.placeholder")}
               className="text-white bg-form-input rounded-md h-[45px] w-full px-[18px] focus:outline-hidden focus:outline-form-border"
             />
             {errors.fname && (
@@ -89,7 +91,7 @@ export default function RegisterPage() {
             <input
               {...register("email")}
               type="text"
-              placeholder="Email"
+              placeholder={t("fields.email.placeholder")}
               className="text-white bg-form-input rounded-md h-[45px] w-full px-[18px] focus:outline-hidden focus:outline-form-border"
             />
             {errors.email && (
@@ -103,7 +105,7 @@ export default function RegisterPage() {
               <input
                 {...register("password")}
                 type={show ? "text" : "password"}
-                placeholder="Password"
+                placeholder={t("fields.password.placeholder")}
                 className="absolute inset-0 z-0 text-white bg-form-input rounded-md w-full px-[18px] pr-[55px] focus:outline-hidden focus:outline-form-border"
               />
               <EyeToggle show={show} setShow={setShow} />
@@ -122,7 +124,7 @@ export default function RegisterPage() {
             className="flex justify-center items-center gap-2 bg-form-button rounded-md text-white px-[18px] h-11 w-full hover:bg-form-button-accent transition-all duration-300"
           >
             {isSubmitting && <Spinner className="w-7 h-7" />}
-            Create Account
+            {t("buttons.register")}
           </button>
         </div>
       </form>

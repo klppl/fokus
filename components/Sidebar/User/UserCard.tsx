@@ -16,13 +16,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { ArrowUpLeft, LogOut, Palette, Globe, RefreshCw, Check } from "lucide-react";
+import { ArrowUpLeft, LogOut, Palette, Globe, RefreshCw, Check, CalendarDays } from "lucide-react";
 import { themeGroups } from "@/lib/themes";
 import { DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import ConfirmLogoutModal from "../Settings/ConfirmLogoutModal";
 import KeyboardShortcuts from "@/components/KeyboardShortcut";
 import CalDavSettings from "@/components/Settings/CalDavSettings";
 import { useLocale } from "next-intl";
+import { useUserPreferences } from "@/providers/UserPreferencesProvider";
+
 const UserCard = ({ className }: { className?: string }) => {
   const { data, status } = useSession();
   const sidebarDict = useTranslations("sidebar");
@@ -32,6 +34,7 @@ const UserCard = ({ className }: { className?: string }) => {
   const [showCalDavSettings, setShowCalDavSettings] = useState(false);
   const [open, setOpen] = useState(false);
   const locale = useLocale();
+  const { preferences, updatePreferences } = useUserPreferences();
   if (status === "loading") return <UserCardLoading />;
   if (!data) return redirect({ href: "/login", locale });
   const { user } = data;
@@ -127,6 +130,28 @@ const UserCard = ({ className }: { className?: string }) => {
                     </DropdownMenuItem>
                   ))}
                 </div>
+              ))}
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <CalendarDays className="w-4! h-4!" strokeWidth={1.7} />
+              {sidebarDict("settingMenu.upcomingDays")}
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent sideOffset={4}>
+              {[0, 1, 2, 3].map((n) => (
+                <DropdownMenuItem
+                  key={n}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    updatePreferences({ upcomingDays: n });
+                  }}
+                >
+                  {(preferences?.upcomingDays ?? 0) === n && <Check className="w-3.5 h-3.5 mr-1" />}
+                  <span className={(preferences?.upcomingDays ?? 0) !== n ? "ml-[1.125rem]" : ""}>
+                    {n === 0 ? sidebarDict("settingMenu.upcomingNone") : `${n} ${n === 1 ? sidebarDict("settingMenu.upcomingDay") : sidebarDict("settingMenu.upcomingDaysLabel")}`}
+                  </span>
+                </DropdownMenuItem>
               ))}
             </DropdownMenuSubContent>
           </DropdownMenuSub>

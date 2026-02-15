@@ -4,10 +4,8 @@ import { api } from "@/lib/api-client";
 import { todoInstanceSchema } from "@/schema";
 import { TodoItemType } from "@/types";
 import React from "react";
-import { endOfDay } from "date-fns";
 
 async function patchTodo({ ghostTodo }: { ghostTodo: TodoItemType }) {
-  //validate input for the ghost todo
   const parsedObj = todoInstanceSchema.safeParse({
     title: ghostTodo.title,
     description: ghostTodo.description,
@@ -22,7 +20,6 @@ async function patchTodo({ ghostTodo }: { ghostTodo: TodoItemType }) {
     return;
   }
   const todoId = ghostTodo.id.split(":")[0];
-
   await api.PATCH({
     url: `/api/todo/instance/${todoId}`,
     headers: { "Content-Type": "application/json" },
@@ -42,38 +39,37 @@ export const useEditTodoInstance = (
     useMutation({
       mutationFn: (ghostTodo: TodoItemType) => patchTodo({ ghostTodo }),
       onMutate: async (newTodo) => {
-        await queryClient.cancelQueries({ queryKey: ["todo"] });
-        const oldTodos = queryClient.getQueryData<TodoItemType[]>(["todo"]);
-
-        queryClient.setQueryData(["todo"], (oldTodos: TodoItemType[]) =>
-          oldTodos.flatMap((oldTodo) => {
-            if (oldTodo.id === newTodo.id) {
-              if (newTodo.dtstart > endOfDay(new Date())) {
-                return [];
+        await queryClient.cancelQueries({ queryKey: ["allTodo"] });
+        const prevQueries = queryClient.getQueriesData<TodoItemType[]>({ queryKey: ["allTodo"] });
+        prevQueries.forEach(([key, data]) => {
+          if (data) {
+            queryClient.setQueryData(key, data.map((oldTodo) => {
+              if (oldTodo.id === newTodo.id) {
+                return {
+                  ...oldTodo,
+                  title: newTodo.title,
+                  description: newTodo.description,
+                  priority: newTodo.priority,
+                  due: newTodo.due,
+                  dtstart: newTodo.dtstart,
+                  durationMinutes: newTodo.durationMinutes,
+                };
               }
-              return {
-                ...oldTodo,
-                title: newTodo.title,
-                description: newTodo.description,
-                priority: newTodo.priority,
-                due: newTodo.due,
-                dtstart: newTodo.dtstart,
-                durationMinutes: newTodo.durationMinutes,
-              };
-            }
-            return oldTodo;
-          }),
-        );
-        return { oldTodos };
+              return oldTodo;
+            }));
+          }
+        });
+        return { prevQueries };
       },
       onSettled: () => {
         if (setEditInstanceOnly) setEditInstanceOnly(false);
         queryClient.invalidateQueries({ queryKey: ["calendarTodo"] });
-        queryClient.invalidateQueries({ queryKey: ["upcomingTodo"] });
+        queryClient.invalidateQueries({ queryKey: ["todo"] });
       },
-
       onError: (error, newTodo, context) => {
-        queryClient.setQueryData(["todo"], context?.oldTodos);
+        context?.prevQueries.forEach(([key, data]) => {
+          queryClient.setQueryData(key, data);
+        });
         toast({ description: error.message, variant: "destructive" });
       },
     });

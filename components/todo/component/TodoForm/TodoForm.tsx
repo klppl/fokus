@@ -172,6 +172,7 @@ const TodoForm = ({
         }
       } else {
         clearInput();
+        setDisplayForm(false);
         createMutateFn({
           id: "-1",
           title,

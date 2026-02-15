@@ -76,6 +76,7 @@ export const useCreateTodo = () => {
         queryKey: ["project", newTodo.projectID],
       });
       queryClient.invalidateQueries({ queryKey: ["calendarTodo"] });
+      queryClient.invalidateQueries({ queryKey: ["upcomingTodo"] });
     },
     onSuccess: (createdTodo: TodoItemType, newTodo) => {
       queryClient.setQueryData(["todo"], (old: TodoItemType[] = []) =>

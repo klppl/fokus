@@ -13,10 +13,10 @@ export type ThemeId = (typeof themes)[number]["id"];
 
 export const themeIds = themes.map((t) => t.id);
 
-const darkIds = new Set(themes.filter((t) => t.isDark).map((t) => t.id));
+const darkIds: Set<string> = new Set(themes.filter((t) => t.isDark).map((t) => t.id));
 
 export function isDarkTheme(id: string): boolean {
-  return darkIds.has(id as ThemeId);
+  return darkIds.has(id);
 }
 
 /** Themes grouped by group name, preserving insertion order. */

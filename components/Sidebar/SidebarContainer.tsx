@@ -6,6 +6,7 @@ import CalendarItem from "./Calendar/CalendarItem";
 import CompletedItem from "./Completed/CompletedItem";
 import NoteCollapsible from "./Note/NoteCollapsible";
 import TodoItem from "./Todo/TodoSidebarItem";
+import AllTasksSidebarItem from "./Todo/AllTasksSidebarItem";
 import UserCard from "./User/UserCard";
 import ProjectSidebarItemContainer from "./Project/ProjectsSidebarItemContainer";
 import LineSeparator from "../ui/lineSeparator";
@@ -75,6 +76,7 @@ const SidebarContainer = () => {
           </div>
           <div className="flex flex-col gap-1 overflow-y-scroll   h-full  my-2 px-4 text-muted-foreground">
             <TodoItem />
+            <AllTasksSidebarItem />
             <CompletedItem />
             <CalendarItem />
             <NoteCollapsible />

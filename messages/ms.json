@@ -53,7 +53,9 @@
     "toasts": {
       "googleError": "Kami tidak dapat melog masuk anda ke Google pada masa ini",
       "discordError": "Kami tidak dapat melog masuk anda ke Discord pada masa ini",
-      "genericError": "Kami tidak dapat mendaftarkan anda pada masa ini"
+      "genericError": "Kami tidak dapat mendaftarkan anda pada masa ini",
+      "accountCreated": "Akaun dicipta",
+      "canLogin": "Anda kini boleh log masuk."
     }
   },
   "app": {
@@ -62,6 +64,7 @@
     "clear": "Kosongkan",
     "save": "Simpan",
     "today": "Hari ini",
+    "allTasks": "Semua Tugas",
     "yesterday": "Semalam",
     "tomorrow": "Esok",
     "nextWeek": "Minggu depan",
@@ -99,7 +102,9 @@
       "never": "Tidak pernah",
       "onDate": "Pada Tarikh (inklusif)"
     },
-    "descPlaceholder": "keterangan"
+    "descPlaceholder": "keterangan",
+    "loadMore": "Muat lagi",
+    "nextWeeks": "{count} minggu seterusnya"
   },
   "today": {
     "saveInstance": "Simpan kejadian",
@@ -122,7 +127,11 @@
     "settingMenu": {
       "logout": "Log keluar",
       "theme": "Tema",
-      "shortcuts": "Pintasan"
+      "shortcuts": "Pintasan",
+      "upcomingDays": "Hari akan datang",
+      "upcomingNone": "Tiada",
+      "upcomingDay": "hari",
+      "upcomingDaysLabel": "hari"
     },
     "noteMenu": {
       "rename": "tukar nama",

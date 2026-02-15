@@ -2,6 +2,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/api-client";
 import { useToast } from "@/hooks/use-toast";
 import { TodoItemType } from "@/types";
+
 export const useCompleteTodo = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -29,26 +30,25 @@ export const useCompleteTodo = () => {
       }
     },
     onMutate: async (todoItem: TodoItemType) => {
-      await queryClient.cancelQueries({ queryKey: ["todo"] });
-      const oldTodos = queryClient.getQueryData(["todo"]) as TodoItemType[];
-      queryClient.setQueryData(["todo"], (oldTodos: TodoItemType[]) =>
-        oldTodos.flatMap((oldTodo) => {
-          if (oldTodo.id === todoItem.id) return [];
-          return [oldTodo];
-        }),
-      );
-      return { oldTodos };
+      await queryClient.cancelQueries({ queryKey: ["allTodo"] });
+      const prevQueries = queryClient.getQueriesData<TodoItemType[]>({ queryKey: ["allTodo"] });
+      prevQueries.forEach(([key, data]) => {
+        if (data) {
+          queryClient.setQueryData(key, data.filter((t) => t.id !== todoItem.id));
+        }
+      });
+      return { prevQueries };
     },
     onError: (error, newTodo, context) => {
       toast({ description: error.message, variant: "destructive" });
-      queryClient.setQueryData(["todo"], context?.oldTodos);
+      context?.prevQueries.forEach(([key, data]) => {
+        queryClient.setQueryData(key, data);
+      });
     },
-    onSuccess: () => {},
     onSettled: () => {
-      //optimistically update calendar todos
       queryClient.invalidateQueries({ queryKey: ["calendarTodo"] });
       queryClient.invalidateQueries({ queryKey: ["completedTodo"] });
-      queryClient.invalidateQueries({ queryKey: ["upcomingTodo"] });
+      queryClient.invalidateQueries({ queryKey: ["todo"] });
     },
   });
 

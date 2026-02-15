@@ -53,7 +53,9 @@
     "toasts": {
       "googleError": "目前无法登录 Google",
       "discordError": "目前无法登录 Discord",
-      "genericError": "目前无法为您注册"
+      "genericError": "目前无法为您注册",
+      "accountCreated": "账户已创建",
+      "canLogin": "您现在可以登录了。"
     }
   },
   "app": {
@@ -62,6 +64,7 @@
     "clear": "清除",
     "save": "保存",
     "today": "今天",
+    "allTasks": "所有任务",
     "yesterday": "昨天",
     "tomorrow": "明天",
     "nextWeek": "下周",
@@ -99,7 +102,9 @@
       "never": "从不",
       "onDate": "指定日期（含）"
     },
-    "descPlaceholder": "描述"
+    "descPlaceholder": "描述",
+    "loadMore": "加载更多",
+    "nextWeeks": "未来 {count} 周"
   },
   "today": {
     "saveInstance": "保存实例",
@@ -122,7 +127,11 @@
     "settingMenu": {
       "logout": "退出登录",
       "theme": "主题",
-      "shortcuts": "快捷键"
+      "shortcuts": "快捷键",
+      "upcomingDays": "未来天数",
+      "upcomingNone": "无",
+      "upcomingDay": "天",
+      "upcomingDaysLabel": "天"
     },
     "noteMenu": {
       "rename": "重命名",

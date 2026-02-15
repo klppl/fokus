@@ -31,7 +31,7 @@ export default async function Layout({
     queryFn: getTodayTodos
   });
 
-  //Prefetch completedTodos 
+  //Prefetch completedTodos
   await queryClient.prefetchQuery({
     queryKey: ["completedTodo"],
     queryFn: getCompletedTodos

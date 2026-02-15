@@ -10,15 +10,15 @@ export type UseDeleteTodoType = () => {
     deletePending: boolean;
 }
 export type useCompleteTodoType = () => {
-    completeMutateFn: UseMutateFunction<void, Error, TodoItemType, { oldTodos: TodoItemType[]; }>;
+    completeMutateFn: UseMutateFunction<void, Error, TodoItemType, unknown>;
     completePending: boolean
 }
 export type usePinTodoType = () => {
-    pinMutateFn: UseMutateFunction<void, Error, TodoItemType, { oldTodos: unknown; }>;
+    pinMutateFn: UseMutateFunction<void, Error, TodoItemType, unknown>;
     pinPending: boolean
 }
 export type usePrioritizeTodoType = () => {
-    prioritizeMutateFn: UseMutateFunction<void, Error, { id: string; level: "Low" | "Medium" | "High"; isRecurring: boolean; }, { oldTodos: TodoItemType[] | undefined; }>;
+    prioritizeMutateFn: UseMutateFunction<void, Error, { id: string; level: "Low" | "Medium" | "High"; isRecurring: boolean; }, unknown>;
     prioritizePending: boolean
 }
 
@@ -28,12 +28,12 @@ export type useReorderTodoType = () => {
 }
 
 export type useEditTodoType = () => {
-    editTodoMutateFn: UseMutateFunction<void, Error, TodoItemTypeWithDateChecksum, { oldTodos: TodoItemType[] | undefined; }>
+    editTodoMutateFn: UseMutateFunction<void, Error, TodoItemTypeWithDateChecksum, unknown>
     editTodoStatus: QueryStatus | "idle"
 }
 
 export type useEditTodoInstanceType = (setEditInstanceOnly: React.Dispatch<React.SetStateAction<boolean>> | undefined) => {
-    editTodoInstanceMutateFn: UseMutateFunction<void, Error, TodoItemType, { oldTodos: TodoItemType[] | undefined; }>
+    editTodoInstanceMutateFn: UseMutateFunction<void, Error, TodoItemType, unknown>
     editTodoInstanceStatus: QueryStatus | "idle"
 }
 

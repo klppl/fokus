@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
         completed: false,
       },
       include: { instances: true },
-    })) as recurringTodoItemType[];
+    })) as unknown as recurringTodoItemType[];
 
     // Expand RRULEs to generate occurrences happening within date range
     const ghostTodos = generateTodosFromRRule(recurringParents, timeZone, {
