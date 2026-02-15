@@ -10,10 +10,19 @@ import {
   ModalDescription,
 } from "@/components/ui/Modal";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   useCalDavAccounts,
   CalDavAccountItem,
+  CalDavCalendarItem,
 } from "@/features/caldav/query/get-caldav-accounts";
 import { useDeleteCalDavAccount } from "@/features/caldav/query/delete-caldav-account";
+import { useUpdateCalDavCalendar } from "@/features/caldav/query/update-caldav-calendar";
 import { useTriggerSync } from "@/features/caldav/query/trigger-sync";
 import CalDavAccountForm from "./CalDavAccountForm";
 import {
@@ -40,7 +49,7 @@ export default function CalDavSettings({
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
       <ModalOverlay>
-        <ModalContent className="max-w-lg top-1/2 -translate-y-1/2 max-h-[80vh] overflow-y-auto">
+        <ModalContent className="max-w-lg max-h-[80vh] overflow-y-auto">
           <ModalHeader>
             <ModalTitle>CalDAV Sync</ModalTitle>
             <ModalDescription>
@@ -145,22 +154,101 @@ function AccountCard({ account }: { account: CalDavAccountItem }) {
       )}
 
       {account.calendars.length > 0 && (
-        <div className="mt-2 flex flex-col gap-1">
+        <div className="mt-2 flex flex-col gap-2">
           {account.calendars.map((cal) => (
-            <div
-              key={cal.id}
-              className="flex items-center gap-2 text-xs text-muted-foreground pl-2"
-            >
-              <Calendar className="w-3 h-3" />
-              <span>{cal.displayName || cal.calendarUrl}</span>
-              <span className="text-xs opacity-60">
-                ({cal.componentType} &middot; {cal.syncDirection.replace("_", " ").toLowerCase()})
-              </span>
-              <span className="text-xs opacity-60">
-                {cal._count.items} items
-              </span>
-            </div>
+            <CalendarCard key={cal.id} calendar={cal} />
           ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CalendarCard({ calendar }: { calendar: CalDavCalendarItem }) {
+  const { mutate: updateCalendar } = useUpdateCalDavCalendar();
+
+  const handleToggleEnabled = () => {
+    updateCalendar({
+      id: calendar.id,
+      data: { syncEnabled: !calendar.syncEnabled },
+    });
+  };
+
+  const handleComponentTypeChange = (value: string) => {
+    updateCalendar({
+      id: calendar.id,
+      data: { componentType: value as "VTODO" | "VEVENT" },
+    });
+  };
+
+  const handleSyncDirectionChange = (value: string) => {
+    updateCalendar({
+      id: calendar.id,
+      data: {
+        syncDirection: value as "BIDIRECTIONAL" | "PULL_ONLY" | "PUSH_ONLY",
+      },
+    });
+  };
+
+  return (
+    <div
+      className={`border rounded-md p-2.5 ${!calendar.syncEnabled ? "opacity-50" : ""}`}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
+          <span className="text-sm font-medium">
+            {calendar.displayName || calendar.calendarUrl}
+          </span>
+          <span className="text-xs text-muted-foreground">
+            {calendar._count.items} items
+          </span>
+        </div>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={calendar.syncEnabled}
+          onClick={handleToggleEnabled}
+          className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+            calendar.syncEnabled ? "bg-primary" : "bg-input"
+          }`}
+        >
+          <span
+            className={`pointer-events-none block h-4 w-4 rounded-full bg-background shadow-lg ring-0 transition-transform ${
+              calendar.syncEnabled ? "translate-x-4" : "translate-x-0"
+            }`}
+          />
+        </button>
+      </div>
+
+      {calendar.syncEnabled && (
+        <div className="flex items-center gap-2 mt-2">
+          <Select
+            value={calendar.componentType}
+            onValueChange={handleComponentTypeChange}
+          >
+            <SelectTrigger className="h-7 text-xs w-[100px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="VTODO">VTODO</SelectItem>
+              <SelectItem value="VEVENT">VEVENT</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={calendar.syncDirection}
+            onValueChange={handleSyncDirectionChange}
+          >
+            <SelectTrigger className="h-7 text-xs w-[140px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="BIDIRECTIONAL">Bidirectional</SelectItem>
+              <SelectItem value="PULL_ONLY">Pull only</SelectItem>
+              <SelectItem value="PUSH_ONLY">Push only</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       )}
     </div>

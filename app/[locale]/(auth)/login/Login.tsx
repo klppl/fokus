@@ -1,7 +1,6 @@
 "use client";
 import { signIn } from "next-auth/react";
 import { loginSchema } from "@/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/hooks/use-toast";
 import EyeToggle from "@/components/ui/eyeToggle";
@@ -19,7 +18,18 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isLoading },
-  } = useForm<LoginFormProp>({ resolver: zodResolver(loginSchema) });
+  } = useForm<LoginFormProp>({
+    resolver: (values) => {
+      const result = loginSchema.safeParse(values);
+      if (result.success) return { values: result.data, errors: {} };
+      const fieldErrors: Record<string, { type: string; message: string }> = {};
+      for (const issue of result.error.issues) {
+        const field = issue.path[0] as string;
+        if (!fieldErrors[field]) fieldErrors[field] = { type: issue.code, message: issue.message };
+      }
+      return { values: {}, errors: fieldErrors };
+    },
+  });
 
   const router = useRouter();
   const { toast } = useToast();

@@ -20,7 +20,7 @@ export default function ConfirmLogoutModal({
       onOpenChange={setLogoutModalOpen}
     >
       <ModalOverlay>
-        <ModalContent className="w-fit min-w-0 top-1/2 -translate-y-1/2 ">
+        <ModalContent className="w-fit min-w-0">
           <ModalHeader>
             <ModalTitle>Logout</ModalTitle>
             <ModalDescription>

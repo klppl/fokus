@@ -86,6 +86,13 @@ export async function discoverCalendars(
   try {
     const calendars = await client.fetchCalendars();
 
+    console.log(`[caldav-discovery] Found ${calendars.length} calendar(s)`);
+    for (const cal of calendars) {
+      const name = typeof cal.displayName === "string" ? cal.displayName : "(unnamed)";
+      const components = cal.components?.join(", ") || "none reported";
+      console.log(`[caldav-discovery]   - "${name}" url=${cal.url} components=[${components}]`);
+    }
+
     return calendars.map((cal: DAVCalendar) => {
       // Determine component type from supported components
       const supportsTodo = cal.components?.includes("VTODO");
@@ -124,8 +131,30 @@ export async function fetchChangedResources(
   newSyncToken: string | null;
 }> {
   try {
+    // tsdav defaults to VEVENT filter — we must pass the correct filter
+    // for the calendar's component type so VTODOs are actually fetched
+    const compFilter =
+      calendar.componentType === "VTODO"
+        ? {
+            "comp-filter": {
+              _attributes: { name: "VCALENDAR" },
+              "comp-filter": {
+                _attributes: { name: "VTODO" },
+              },
+            },
+          }
+        : {
+            "comp-filter": {
+              _attributes: { name: "VCALENDAR" },
+              "comp-filter": {
+                _attributes: { name: "VEVENT" },
+              },
+            },
+          };
+
     const objects = await client.fetchCalendarObjects({
       calendar: { url: calendar.calendarUrl },
+      filters: [compFilter],
     });
 
     const resources: CalDavResource[] = (objects || [])

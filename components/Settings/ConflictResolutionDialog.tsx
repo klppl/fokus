@@ -27,7 +27,7 @@ export default function ConflictResolutionDialog({
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
       <ModalOverlay>
-        <ModalContent className="max-w-2xl top-1/2 -translate-y-1/2 max-h-[80vh] overflow-y-auto">
+        <ModalContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <ModalHeader>
             <ModalTitle>Sync Conflicts</ModalTitle>
             <ModalDescription>

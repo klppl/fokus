@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
       result = await syncAllForUser(user.id);
     }
 
+    console.log(`[caldav-sync] Result:`, JSON.stringify(result));
     return NextResponse.json(
       {
         message: `Sync complete: ${result.pulled} pulled, ${result.pushed} pushed, ${result.deleted} deleted, ${result.conflicts} conflicts`,

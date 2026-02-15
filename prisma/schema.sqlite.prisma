@@ -280,6 +280,7 @@ model CalDavCalendar {
   syncToken       String?
   syncDirection   SyncDirection @default(BIDIRECTIONAL)
   componentType   ComponentType @default(VTODO)
+  syncEnabled     Boolean       @default(true)
   project         Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
   projectId       String?
   createdAt       DateTime      @default(now())

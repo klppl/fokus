@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { registrationSchema } from "@/schema";
 import { useRouter } from "@/i18n/navigation";
 import { useToast } from "@/hooks/use-toast";
@@ -21,7 +20,18 @@ export default function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<RegisterForm>({ resolver: zodResolver(registrationSchema) });
+  } = useForm<RegisterForm>({
+    resolver: (values) => {
+      const result = registrationSchema.safeParse(values);
+      if (result.success) return { values: result.data, errors: {} };
+      const fieldErrors: Record<string, { type: string; message: string }> = {};
+      for (const issue of result.error.issues) {
+        const field = issue.path[0] as string;
+        if (!fieldErrors[field]) fieldErrors[field] = { type: issue.code, message: issue.message };
+      }
+      return { values: {}, errors: fieldErrors };
+    },
+  });
 
   const router = useRouter();
   const { toast } = useToast();

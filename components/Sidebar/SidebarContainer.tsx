@@ -76,9 +76,9 @@ const SidebarContainer = () => {
             <NoteCollapsible />
             <LineSeparator className="m-0 mt-8 mb-4" />
             <ProjectSidebarItemContainer />
-            <SyncStatusIndicator />
           </div>
-          <div className="px-4 pb-3">
+          <div className="flex flex-col gap-1 px-4 pb-3">
+            <SyncStatusIndicator />
             <Link
               href="/admin"
               className="flex items-center gap-2 text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"

@@ -149,6 +149,7 @@ export const calDavCalendarPatchSchema = z.object({
     .enum(["BIDIRECTIONAL", "PULL_ONLY", "PUSH_ONLY"])
     .optional(),
   componentType: z.enum(["VTODO", "VEVENT"]).optional(),
+  syncEnabled: z.boolean().optional(),
   projectId: z.string().nullable().optional(),
 });
 

@@ -40,9 +40,11 @@ export async function POST(req: NextRequest) {
     try {
       const client = await createCalDavClient(account as CalDavAccount);
       const discovered = await discoverCalendars(client);
+      console.log(`[caldav-account] Discovered ${discovered.length} calendar(s) for "${displayName}"`);
 
       // Create calendar records
       for (const cal of discovered) {
+        console.log(`[caldav-account] Creating calendar: "${cal.displayName}" type=${cal.componentType} url=${cal.url}`);
         await prisma.calDavCalendar.create({
           data: {
             accountId: account.id,
@@ -55,8 +57,8 @@ export async function POST(req: NextRequest) {
           },
         });
       }
-    } catch {
-      // Discovery failed but account was created — user can retry later
+    } catch (err) {
+      console.error(`[caldav-account] Discovery failed for "${displayName}":`, err instanceof Error ? err.message : err);
     }
 
     const accountWithCalendars = await prisma.calDavAccount.findUnique({

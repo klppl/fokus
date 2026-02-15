@@ -8,6 +8,7 @@ export interface CalDavCalendarItem {
   color: string | null;
   syncDirection: "BIDIRECTIONAL" | "PULL_ONLY" | "PUSH_ONLY";
   componentType: "VTODO" | "VEVENT";
+  syncEnabled: boolean;
   projectId: string | null;
   _count: { items: number };
 }

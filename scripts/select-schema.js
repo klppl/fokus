@@ -2,6 +2,7 @@
 
 /**
  * Copies the SQLite Prisma schema to the active schema location.
+ * Skips the copy if the target is already identical (avoids triggering prisma generate).
  */
 
 const fs = require("fs");
@@ -16,5 +17,11 @@ if (!fs.existsSync(source)) {
   process.exit(1);
 }
 
-fs.copyFileSync(source, target);
-console.log("[select-schema] Using SQLite schema");
+const sourceContent = fs.readFileSync(source);
+
+if (fs.existsSync(target) && Buffer.compare(sourceContent, fs.readFileSync(target)) === 0) {
+  console.log("[select-schema] Schema already up to date");
+} else {
+  fs.copyFileSync(source, target);
+  console.log("[select-schema] Copied SQLite schema");
+}

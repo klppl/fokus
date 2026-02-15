@@ -44,8 +44,10 @@ export async function syncAccount(account: CalDavAccount): Promise<SyncResult> {
   };
 
   const calendars = await prisma.calDavCalendar.findMany({
-    where: { accountId: account.id },
+    where: { accountId: account.id, syncEnabled: true },
   });
+
+  console.log(`[caldav-sync] Account "${account.displayName}": found ${calendars.length} enabled calendar(s)`);
 
   const client = await createCalDavClient(account);
 
@@ -92,6 +94,7 @@ async function syncCalendar(
   // PULL phase
   if (calendar.syncDirection !== "PUSH_ONLY") {
     try {
+      console.log(`[caldav-sync] Fetching from calendar "${calendar.displayName}" (${calendar.calendarUrl}), direction=${calendar.syncDirection}, componentType=${calendar.componentType}`);
       const { resources, deletedHrefs, newSyncToken } =
         await fetchChangedResources(client, calendar);
 
@@ -120,10 +123,15 @@ async function syncCalendar(
       }
 
       // Process changed/new resources
+      console.log(`[caldav-sync] Pull: ${resources.length} resources from calendar "${calendar.displayName || calendar.calendarUrl}" (componentType=${calendar.componentType})`);
       for (const resource of resources) {
         try {
           const parsed = icalToTodo(resource.icalData, calendar.componentType);
-          if (!parsed) continue;
+          if (!parsed) {
+            console.warn(`[caldav-sync] Skipped resource ${resource.href}: icalToTodo returned null (componentType=${calendar.componentType})`);
+            console.warn(`[caldav-sync] Resource data preview: ${resource.icalData.substring(0, 200)}`);
+            continue;
+          }
 
           const existingItem = await prisma.calDavSyncItem.findFirst({
             where: { calendarId: calendar.id, caldavUid: parsed.uid },
