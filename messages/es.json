@@ -79,6 +79,7 @@
     "priority": "Prioridad",
     "project": "Proyecto",
     "overdue": "Vencido",
+    "moveToToday": "Mover a Hoy",
     "normal": "Normal",
     "important": "Importante",
     "urgent": "Urgente",

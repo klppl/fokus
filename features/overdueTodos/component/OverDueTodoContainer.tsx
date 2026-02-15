@@ -12,12 +12,34 @@ import { useEditOverdueTodo } from "../query/update-overdue-todo";
 import { useEditOverdueTodoInstance } from "../query/update-overdue-todo-instance";
 import { useReorderOverdueTodo } from "../query/reorder-overdue-todo";
 import { useCompleteOverdueTodo } from "../query/complete-overdue-todo";
+import { useRescheduleToToday } from "../query/reschedule-overdue-todo";
+import { useOverdueDrag } from "@/providers/OverdueDragProvider";
 import TodoMutationProvider from "@/providers/TodoMutationProvider";
 
 export default function OverDueTodoContainer() {
     const t = useTranslations("app");
     const { todos: overdueTodos, isLoading } =
         useOverdueTodo();
+    const { rescheduleToToday } = useRescheduleToToday();
+    const { setIsDraggingOverdue, isPointerOverToday } = useOverdueDrag();
+
+    const handleReschedule = React.useCallback(
+        (todoId: string): boolean => {
+            if (!isPointerOverToday()) return false;
+            const todo = overdueTodos.find((t) => t.id === todoId);
+            if (!todo) return false;
+            rescheduleToToday({ todo });
+            return true;
+        },
+        [overdueTodos, rescheduleToToday, isPointerOverToday],
+    );
+
+    const handleDragStateChange = React.useCallback(
+        (isDragging: boolean) => {
+            setIsDraggingOverdue(isDragging);
+        },
+        [setIsDraggingOverdue],
+    );
 
     if (!overdueTodos.length) return null
     return (
@@ -38,7 +60,12 @@ export default function OverDueTodoContainer() {
                     usePrioritizeTodo={usePrioritizeOverdueTodo}
                     useReorderTodo={useReorderOverdueTodo}
                 >
-                    <TodoGroup todos={overdueTodos} overdue={true} />
+                    <TodoGroup
+                        todos={overdueTodos}
+                        overdue={true}
+                        onReschedule={handleReschedule}
+                        onDragStateChange={handleDragStateChange}
+                    />
                 </TodoMutationProvider>
             </div>
         </div >

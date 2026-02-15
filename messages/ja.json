@@ -79,6 +79,7 @@
     "priority": "優先度",
     "project": "プロジェクト",
     "overdue": "期限切れ",
+    "moveToToday": "今日に移動",
     "normal": "通常",
     "important": "重要",
     "urgent": "緊急",

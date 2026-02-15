@@ -80,6 +80,7 @@
     "priority": "Priority",
     "project": "Project",
     "overdue": "Overdue",
+    "moveToToday": "Move to Today",
     "normal": "Normal",
     "important": "Important",
     "urgent": "Urgent",

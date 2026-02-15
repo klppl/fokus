@@ -24,6 +24,7 @@ import { useProjectMetaData } from "@/components/Sidebar/Project/query/get-proje
 import { useUserPreferences } from "@/providers/UserPreferencesProvider";
 import TodoFilterBar from "./TodoFilterBar";
 import { formatDateInTZ } from "@/lib/date/formatDateinTZ";
+import { useOverdueDrag } from "@/providers/OverdueDragProvider";
 
 const TodayTodoContainer = () => {
   const locale = useLocale();
@@ -32,6 +33,7 @@ const TodayTodoContainer = () => {
   const { preferences } = useUserPreferences();
   const { todos, todoLoading } = useTodo();
   const [containerHovered, setContainerHovered] = useState(false);
+  const { isDraggingOverdue, todaySectionRef } = useOverdueDrag();
   const pinnedTodos = useMemo(() =>
     todos.filter(({ pinned }) => pinned),
     [todos]
@@ -96,7 +98,15 @@ const TodayTodoContainer = () => {
       usePrioritizeTodo={usePrioritizeTodo}
       useReorderTodo={useReorderTodo}
     >
-      <div className="mb-20" onMouseOver={() => (setContainerHovered(true))} onMouseOut={() => setContainerHovered(false)}>
+      <div
+        ref={todaySectionRef}
+        className={clsx(
+          "mb-20 rounded-lg transition-all duration-200",
+          isDraggingOverdue && "ring-2 ring-green-500/50 bg-green-500/5 p-3 -m-3"
+        )}
+        onMouseOver={() => (setContainerHovered(true))}
+        onMouseOut={() => setContainerHovered(false)}
+      >
         {/* Render Pinned Todos */}
         {pinnedTodos.length > 0 && (
           <TodoGroup
@@ -110,6 +120,11 @@ const TodayTodoContainer = () => {
               {appDict("today")}
             </h3>
             <p className="text-muted-foreground text-lg">{formatDateInTZ(userTZ?.timeZone).slice(0, 6)}</p>
+            {isDraggingOverdue && (
+              <span className="ml-2 text-sm font-medium text-green-500 animate-pulse">
+                {appDict("moveToToday")}
+              </span>
+            )}
           </div>
           <TodoFilterBar
             containerHovered={containerHovered}

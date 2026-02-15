@@ -79,6 +79,7 @@
     "priority": "Приоритет",
     "project": "Проект",
     "overdue": "Просрочено",
+    "moveToToday": "Перенести на сегодня",
     "normal": "Обычный",
     "important": "Важный",
     "urgent": "Срочный",

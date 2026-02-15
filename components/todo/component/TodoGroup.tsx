@@ -17,10 +17,14 @@ const TodoGroup = ({
   todos,
   className,
   overdue,
+  onReschedule,
+  onDragStateChange,
 }: {
   todos: TodoItemType[];
   className?: string;
   overdue?: boolean;
+  onReschedule?: (todoId: string) => boolean;
+  onDragStateChange?: (isDragging: boolean) => void;
 }) => {
   const { toast } = useToast()
   const { preferences } = useUserPreferences();
@@ -68,8 +72,20 @@ const TodoGroup = ({
     useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } })
   );
 
+  function handleDragStart() {
+    onDragStateChange?.(true);
+  }
+
   function handleDragEnd(event: DragEndEvent) {
+    onDragStateChange?.(false);
     const { active, over } = event;
+
+    // Check if dropped on the Today section (cross-context reschedule)
+    if (onReschedule) {
+      const handled = onReschedule(String(active.id));
+      if (handled) return;
+    }
+
     if (!over) return;
     if (active.id !== over.id) {
       setItems((items) => {
@@ -109,7 +125,9 @@ const TodoGroup = ({
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        onDragCancel={() => onDragStateChange?.(false)}
       >
         <SortableContext
           items={items}
